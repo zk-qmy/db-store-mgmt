@@ -7,8 +7,8 @@ public class CtmInfoView extends JFrame{
     private JTextField txtCtmPhone  = new JTextField(10);
     private JTextField txtCtmAddress  = new JTextField(10);
 
-    private JButton btnLoad = new JButton("Load Account");
-    private JButton btnSend = new JButton("Send Order");
+    private JButton btnLoad = new JButton("Load Account"); // TO DO: maybe change to create account
+    private JButton btnSend = new JButton("Send Order"); // maybe change to create account
 
     public CtmInfoView() {
         this.setTitle("Customer Shipping Information");
