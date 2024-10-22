@@ -1,3 +1,4 @@
+/*
 package customer.customers;
 
 import javax.swing.*;
@@ -67,6 +68,7 @@ public class CtmInfoController {
         // Store the product to the database
 
         dataAdapter.saveProduct(product);
-         */
+
     }
 }
+*/
