@@ -12,7 +12,7 @@ public class CartDAO {
 
     }
     // loadCart
-    public Cart loadCart(int cartID) throws SQLException{
+    public Cart loadCart(int cartID){
         connection = null;
         Cart cart = null;
         try{
@@ -40,7 +40,7 @@ public class CartDAO {
         } catch (SQLException e) {
             return null;
         } finally {
-            if (connection != null) DatabaseConn.getInstance().closeConn(connection);
+            DatabaseConn.getInstance().closeConn(connection);
         }
     }
     // addToCart
@@ -71,13 +71,42 @@ public class CartDAO {
             e.printStackTrace();
             return false;
         }finally {
-            try {
-                DatabaseConn.getInstance().closeConn(connection);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            DatabaseConn.getInstance().closeConn(connection);
         }
     }
-    // RemoveFromCart
+    /*// TO DO: RemoveFromCart (clear a product/cartline by id in cart)
+    // Clear cart from CartItem and Cart tables
+    public void clearCart(int cartId) throws SQLException {
+        String deleteItemsQuery = "DELETE FROM CartItem WHERE cart_id = ?";
+        PreparedStatement stmt = connection.prepareStatement(deleteItemsQuery);
+        stmt.setInt(1, cartId);
+        stmt.executeUpdate();
+
+        String deleteCartQuery = "DELETE FROM Cart WHERE cart_id = ?";
+        stmt = connection.prepareStatement(deleteCartQuery);
+        stmt.setInt(1, cartId);
+        stmt.executeUpdate();
+    }*/
+    // TO DO: ClearCart(clear all products in cart)
+
+
+    /*// TO DO: Placing order: Transfer cart items to order details
+    public void placeOrder(int customerId) throws SQLException {
+        int cartId = getCartIdForCustomer(customerId);
+
+        // 1. Create a new order
+        int orderId = createOrder(customerId);
+
+        // 2. Move items from CartItem to OrderDetails
+        String query = "INSERT INTO OrderDetails (order_id, product_id, quantity, price) " +
+                "SELECT ?, product_id, quantity, price FROM CartItem WHERE cart_id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, orderId);
+        stmt.setInt(2, cartId);
+        stmt.executeUpdate();
+
+        // 3. Clear the cart
+        clearCart(cartId);
+    }*/
 
 }

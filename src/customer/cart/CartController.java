@@ -47,6 +47,10 @@ public class CartController implements ActionListener {
         */
     }
     public void placeOrder(){
+        // TO DO: show order placed message + save the order to Orders table + all lines to OrderDetails. if not
+        // hit the button, do not save the info yet.
+
+
         // Save the cart and its details into the database
         cartDao.addToCart(cart);
         // Optionally, clear the cart or show a success message
