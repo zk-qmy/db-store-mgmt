@@ -88,4 +88,47 @@ public class ProductsDAO {
         }
         return productKeys;
     }
+    public List<String> getAllCategs(){
+        List<String> categories = new ArrayList<>();
+        Connection connection = null;
+        try {
+            connection= DatabaseConn.getInstance().getConnection();
+            String query = "SELECT name FROM Categories";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()) {
+                categories.add(rs.getString("name"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return categories;
+    }
+    public List<Products> findProductsByCateg(String categName){
+        Connection connection=null;
+        List<Products> productsList = new ArrayList<>();
+        try{
+            String query = "SELECT * FROM Products JOIN Categories ON Products.categoryID = Categories.id";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Products product = new Products();
+                product.setProductID(rs.getInt("id"));
+                product.setProductName(rs.getString("name"));
+                product.setStockQuantity(rs.getInt("quantity"));
+                product.setPrice(rs.getDouble("price"));
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return productsList;
+    }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.border.EmptyBorder;
 
 public class BrowserView extends JFrame {
+    private JComboBox<String> categoryComboBox;
     private JButton btnFind = new JButton("Find product");
     private JButton btnBrowse = new JButton(("See all Products"));
     private JButton btnBuy = new JButton("Start Purchasing"); // navigate to cart view
@@ -23,6 +24,11 @@ public class BrowserView extends JFrame {
         this.setTitle("Our Products");
         this.setLayout(new BorderLayout());
         this.setSize(1020, 800);
+
+        //ComboBox
+        categoryComboBox = new JComboBox<>();
+        categoryComboBox.setSelectedItem(null);
+        categoryComboBox.setPreferredSize(new Dimension(50, 100));
 
         // LabelTit
         JLabel labelTit = new JLabel("Explore Our Product!");
@@ -36,6 +42,7 @@ public class BrowserView extends JFrame {
         JPanel controlPan = new JPanel();
         controlPan.setLayout(new BoxLayout(controlPan, BoxLayout.Y_AXIS));
         controlPan.setBorder(new EmptyBorder(40, 20, 40, 20));
+        controlPan.add(categoryComboBox);
         controlPan.add(btnBuy);
         controlPan.add(btnFind);
         controlPan.add(btnBrowse);
@@ -58,7 +65,9 @@ public class BrowserView extends JFrame {
         this.getContentPane().add(parentPan, BorderLayout.CENTER);
         this.getContentPane().add(labelTit, BorderLayout.NORTH);
     }
-
+    public JComboBox<String> getCategoryComboBox() {
+        return categoryComboBox;
+    }
     public JButton getBtnFind() {
         return btnFind;
     }

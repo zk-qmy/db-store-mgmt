@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.List;
 
 import products.Products;
 import products.ProductsDAO;
@@ -64,16 +65,34 @@ public class CartController implements ActionListener {
 
     private void addProduct(){
         // debug
+        int productID = 0;
         System.out.println("get into addProduct!!!");
         String id = JOptionPane.showInputDialog("Enter ProductID: ");
-
-
-        Products product = productsDao.findProductbyID(Integer.parseInt(id));
-        if (product == null) {
-            JOptionPane.showMessageDialog(null, "This product does not exist!");
+        try {
+            productID = Integer.parseInt(id);
+        }catch(NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid product ID!");
             return;
         }
-        int orderQuantity = Integer.parseInt(JOptionPane.showInputDialog(null,"Enter orderQuantity: "));
+        List<Integer> productKeys = productsDao.getProductKeyID();
+        if(!productKeys.contains(productID)) {
+            JOptionPane.showMessageDialog(null, "Product ID does not exist!!");
+            return;
+        }
+
+        Products product = productsDao.findProductbyID(Integer.parseInt(id));
+        /*if (product == null) {
+            JOptionPane.showMessageDialog(null, "This product does not exist!");
+            return;
+        }*/
+        int orderQuantity = 0;
+        String quantity = JOptionPane.showInputDialog(null,"Enter orderQuantity: ");
+        try {
+            orderQuantity = Integer.parseInt(quantity);
+        }catch(NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid quantity!");
+            return;
+        }
         if (orderQuantity < 0 ) {
             JOptionPane.showMessageDialog(null, "This orderQuantity is not valid!");
             return;

@@ -25,6 +25,7 @@ public class BrowserController implements ActionListener {
         this.ordersDAO = ordersDAO;
         this.orderDetailsDAO = orderDetailsDAO;
         loadProductList();
+        loadCategTags();
         //int productID = 0;
         view.getBtnFind().addActionListener(this);
         view.getBtnBrowse().addActionListener(this);
@@ -80,6 +81,29 @@ public class BrowserController implements ActionListener {
 
     public void loadProductList() {
         List<Products> productsList = productDAO.loadAllProducts();
+        view.displayProducts(productsList);
+    }
+
+    public void loadCategTags() {
+        List<String> categories = productDAO.getAllCategs(); // Implement this method in your DAO
+        // Clear existing items
+        view.getCategoryComboBox().removeAllItems();
+
+        for (String category : categories) {
+            view.getCategoryComboBox().addItem(category);
+        }
+
+        // Action listener for category selection
+        view.getCategoryComboBox().addActionListener(e -> {
+            String selectedCategory = (String) view.getCategoryComboBox().getSelectedItem();
+            if (selectedCategory != null) {
+                loadProductsByCateg(selectedCategory);
+            }
+        });
+    }
+
+    public void loadProductsByCateg(String categoryName) {
+        List<Products> productsList = productDAO.findProductsByCateg(categoryName);
         view.displayProducts(productsList);
     }
 
