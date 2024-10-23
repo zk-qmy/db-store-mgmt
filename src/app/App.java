@@ -13,55 +13,60 @@ import products.ProductsDAO;
 
 public class App {
     private static App instance;
+
     // Main components
-    /*private Connection connection;
-    public Connection getConnection() {
-       return connection;
-    }*/
+    private final OrdersDAO ordersDAO;
+    private final OrderDetailsDAO orderDetailsDAO;
+    private final CartView cartView;
+    private final CartDAO cartDAO;
+    private final ProductsDAO productsDAO;
+    private final BrowserView browserView;
+    private final OrderHisView orderHisView;
 
-    // Orders
-    private OrdersDAO ordersDAO = new OrdersDAO();
-    // OrderDetails
-    private OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
-    //Order History
-    private OrderHisView orderHisView = new OrderHisView(ordersDAO, orderDetailsDAO);
-    public OrderHisView getOrderHisView() {
-        return orderHisView;
-    }
-    private OrderHisController orderHisController;
+    // Controllers
+    private final OrderHisController orderHisController;
+    private final CartController cartController;
+    private final BrowserController browserController;
 
-    // Cart
-    private CartView cartView = new CartView();
-    public CartView getCartView() {
-        return cartView;
-    }
-    private CartController cartController;
-    private CartDAO cartDAO = new CartDAO();
+    // Constructor with Dependency Injection
+    private App(OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO, CartDAO cartDAO, ProductsDAO productsDAO) {
+        this.ordersDAO = ordersDAO;
+        this.orderDetailsDAO = orderDetailsDAO;
+        this.cartDAO = cartDAO;
+        this.productsDAO = productsDAO;
 
-    //Browser
-    private ProductsDAO productsDAO = new ProductsDAO();
-    private BrowserView browserView = new BrowserView(productsDAO, ordersDAO, orderDetailsDAO);
-    public BrowserView getBrowserView() {
-        return browserView;
-    }
-    private BrowserController browserController;
+        this.orderHisView = new OrderHisView(ordersDAO, orderDetailsDAO);
+        this.cartView = new CartView();
+        this.browserView = new BrowserView(productsDAO, ordersDAO, orderDetailsDAO);
 
-    // Constructor
-    private App() {
-        browserController = new BrowserController(browserView, productsDAO, ordersDAO, orderDetailsDAO);
-        orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
-        cartController = new CartController(cartView,cartDAO, productsDAO);
+        // Initialize controllers
+        this.browserController = new BrowserController(browserView, productsDAO, ordersDAO, orderDetailsDAO);
+        this.orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
+        this.cartController = new CartController(cartView, cartDAO, productsDAO);
     }
+
     public static App getInstance() {
-        if(instance == null) {
-            instance = new App();
+        if (instance == null) {
+            // Inject dependencies when creating the App instance
+            instance = new App(new OrdersDAO(), new OrderDetailsDAO(), new CartDAO(), new ProductsDAO());
         }
         return instance;
     }
+
+    public OrderHisView getOrderHisView() {
+        return orderHisView;
+    }
+
+    public CartView getCartView() {
+        return cartView;
+    }
+
+    public BrowserView getBrowserView() {
+        return browserView;
+    }
+
     // Main class
     public static void main(String[] args) {
         App.getInstance().getBrowserView().setVisible(true);
     }
-
-
 }

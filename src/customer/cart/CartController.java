@@ -67,13 +67,13 @@ public class CartController implements ActionListener {
         System.out.println("get into addProduct!!!");
         String id = JOptionPane.showInputDialog("Enter ProductID: ");
 
+
         Products product = productsDao.findProductbyID(Integer.parseInt(id));
         if (product == null) {
             JOptionPane.showMessageDialog(null, "This product does not exist!");
             return;
         }
         int orderQuantity = Integer.parseInt(JOptionPane.showInputDialog(null,"Enter orderQuantity: "));
-
         if (orderQuantity < 0 ) {
             JOptionPane.showMessageDialog(null, "This orderQuantity is not valid!");
             return;

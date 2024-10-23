@@ -21,12 +21,13 @@ public class BrowserController implements ActionListener {
     public BrowserController(BrowserView view, ProductsDAO productDAO, OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO) {
         this.productDAO = productDAO;
         this.view = view;
-
+        System.out.println("browser controller created!");
         this.ordersDAO = ordersDAO;
         this.orderDetailsDAO = orderDetailsDAO;
         loadProductList();
         //int productID = 0;
         view.getBtnFind().addActionListener(this);
+        view.getBtnBrowse().addActionListener(this);
         view.getBtnBuy().addActionListener(this);
         view.getBtnOrderHis().addActionListener(this);
     }
@@ -34,8 +35,12 @@ public class BrowserController implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.getBtnFind()) {
+            System.out.println("find product button triggered!");
             findProduct();
-        } else if (e.getSource() == view.getBtnBuy()) {
+        }else if (e.getSource() == view.getBtnBrowse()){
+            loadProductList();
+        }
+        else if (e.getSource() == view.getBtnBuy()) {
             //open new checkout screen
             App.getInstance().getCartView().setVisible(true);
         } else if (e.getSource() == view.getBtnOrderHis()) {
@@ -63,8 +68,13 @@ public class BrowserController implements ActionListener {
             JOptionPane.showMessageDialog(null, "Invalid product ID!");
             return;
         }
-        Products product = productDAO.findProductbyID(productID);
-        view.displaySelectedProduct(product);
+        List<Integer> productKeys = productDAO.getProductKeyID();
+        if (productKeys.contains(productID)) {
+            Products product = productDAO.findProductbyID(productID);
+            view.displaySelectedProduct(product);
+        } else {
+            JOptionPane.showMessageDialog(null,"Product ID does not exist!");
+        }
     }
 
 

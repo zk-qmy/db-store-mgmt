@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 
 public class BrowserView extends JFrame {
     private JButton btnFind = new JButton("Find product");
+    private JButton btnBrowse = new JButton(("See all Products"));
     private JButton btnBuy = new JButton("Start Purchasing"); // navigate to cart view
     private JButton btnOrderHis = new JButton("See Order History");
     private JPanel productPan;
@@ -37,6 +38,7 @@ public class BrowserView extends JFrame {
         controlPan.setBorder(new EmptyBorder(40, 20, 40, 20));
         controlPan.add(btnBuy);
         controlPan.add(btnFind);
+        controlPan.add(btnBrowse);
         controlPan.add(btnOrderHis);
         // Product panel - grid
         productPan = new JPanel();
@@ -47,7 +49,7 @@ public class BrowserView extends JFrame {
         scrollPan.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPan.setPreferredSize(new Dimension(600, 400));
         // border for each product box
-        new BrowserController(this, productsDAO, ordersDAO, orderDetailsDAO);
+        // new BrowserController(this, productsDAO, ordersDAO, orderDetailsDAO);
         //add(productPan, BorderLayout.CENTER);
 
         parentPan.add(controlPan, BorderLayout.EAST);
@@ -60,6 +62,7 @@ public class BrowserView extends JFrame {
     public JButton getBtnFind() {
         return btnFind;
     }
+    public JButton getBtnBrowse(){return btnBrowse;}
 
     public JButton getBtnBuy() {
         return btnBuy;
@@ -67,7 +70,6 @@ public class BrowserView extends JFrame {
     public JButton getBtnOrderHis() {return btnOrderHis;}
 
     public void displayProducts(List<Products> productsList) {
-        //List<Products> productList = BrowserController.loadProductList();
         // clear existing components
         productPan.removeAll();
 

@@ -26,7 +26,7 @@ public class OrdersDAO {
         try {
             conn = DatabaseConn.getInstance().getConnection();
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Orders order = new Orders();
                 order.setOrderId(rs.getInt("id"));

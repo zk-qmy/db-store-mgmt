@@ -46,7 +46,7 @@ public class OrderHisView extends JFrame{
         scrollPan.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPan.setPreferredSize(new Dimension(600, 400));
         // border for each product box
-        new OrderHisController(this, ordersDAO, orderDetailsDAO);
+        //new OrderHisController(this, ordersDAO, orderDetailsDAO);
         //add(orderPan, BorderLayout.CENTER);
 
         parentPan.add(controlPan, BorderLayout.SOUTH);

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 import app.DatabaseConn;
 
+import javax.swing.plaf.nimbus.State;
+import javax.xml.crypto.Data;
+
 
 public class ProductsDAO {
     // Load
@@ -64,4 +67,25 @@ public class ProductsDAO {
     // Add
     //Update
     // delete
+    // Get product id key
+    public List<Integer> getProductKeyID() {
+        Connection connection = null;
+        List<Integer> productKeys = new ArrayList<>();
+        try {
+            connection = DatabaseConn.getInstance().getConnection();
+            PreparedStatement stmt = connection.prepareStatement("SELECT id FROM Products");
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                //Products product = new Products();
+                //product.setProductID(rs.getInt("id"));
+                productKeys.add(rs.getInt("id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return productKeys;
+    }
 }
