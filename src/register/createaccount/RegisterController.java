@@ -68,9 +68,9 @@ public class RegisterController implements ActionListener {
             }
         }
     }
-    private boolean isValidInput(String input) {
+    private boolean isValidInput(String string) {
         // Regex to check if the string contains only letters, digits, and spaces
-        return input != null && !input.trim().isEmpty() && input.matches("^[a-zA-Z0-9\\s]+$");
+        return string != null && !string.trim().isEmpty() && string.matches("^[a-zA-Z0-9\\s]+$");
     }
     private boolean isValidPassword(String string) {
         return string != null && !string.trim().isEmpty();
