@@ -5,17 +5,19 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
+import orders.OrderDetailsDAO;
 import products.Products;
 import products.ProductsDAO;
 
 public class CartController implements ActionListener {
     private CartView view;
     private CartDAO cartDao;
+    private OrderDetailsDAO orderDetailsDAO;
     private ProductsDAO productsDao;
     private Cart cart = null;
 
-    public CartController(CartView view, CartDAO cartDao, ProductsDAO productsDao) {
-        this.cartDao = cartDao;
+    public CartController(CartView view, OrderDetailsDAO orderDetailsDAO, ProductsDAO productsDao) {
+        this.orderDetailsDAO = orderDetailsDAO;
         this.view = view;
         this.productsDao = productsDao;
 
@@ -50,10 +52,19 @@ public class CartController implements ActionListener {
     public void placeOrder(){
         // TO DO: show order placed message + save the order to Orders table + all lines to OrderDetails. if not
         // hit the button, do not save the info yet.
+        // update new orderQuantity!!
+        for (CartLines line: cart.getLines()) {
+            int productID = line.getProductID();
+            Products product = productsDao.findProductbyID(productID);
 
-
+            int newStockQuantity = product.getStockQuantity() - line.getOrderQuantity();
+            //product.setStockQuantity(newStockQuantity);
+            productsDao.updateProductStock(newStockQuantity, productID);
+        }
+        String defaultStatus = "pending";
+        int customerID = 2;
         // Save the cart and its details into the database
-        cartDao.addToCart(cart);
+        orderDetailsDAO.addToOrderDB(cart, defaultStatus, customerID);
         // Optionally, clear the cart or show a success message
         JOptionPane.showMessageDialog(null, "Order placed successfully!");
         // Clear the cart

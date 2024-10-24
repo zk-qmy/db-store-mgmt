@@ -8,14 +8,16 @@ import java.sql.*;
 
 public class CartDAO {
     private Connection connection;
-    public CartDAO(){
+
+    public CartDAO() {
 
     }
+
     // loadCart
-    public Cart loadCart(int cartID){
+    public Cart loadCart(int cartID) {
         connection = null;
         Cart cart = null;
-        try{
+        try {
             connection = DatabaseConn.getInstance().getConnection();
             Statement stmt = connection.createStatement();
             String query1 = "SELECT * FROM Cart";
@@ -26,10 +28,10 @@ public class CartDAO {
                 rs.close();
                 stmt.close();
             }
-            String query2 = "SELECT * FROM CartLines WHERE cartID = "+cartID;
+            String query2 = "SELECT * FROM CartLines WHERE cartID = " + cartID;
             // Load cart lines for the cart
             rs = stmt.executeQuery(query2);
-            while(rs.next()) {
+            while (rs.next()) {
                 CartLines line = new CartLines();
                 line.setCartID(rs.getInt(1));
                 line.setProductID(rs.getInt(2));
@@ -43,6 +45,8 @@ public class CartDAO {
             DatabaseConn.getInstance().closeConn(connection);
         }
     }
+}
+    /*
     // addToCart
     public boolean addToCart(Cart cart){
         System.out.println("Got into addToCart function!!!");
@@ -73,7 +77,8 @@ public class CartDAO {
         }finally {
             DatabaseConn.getInstance().closeConn(connection);
         }
-    }
+     */
+
     /*// TO DO: RemoveFromCart (clear a product/cartline by id in cart)
     // Clear cart from CartItem and Cart tables
     public void clearCart(int cartId) throws SQLException {
@@ -109,4 +114,3 @@ public class CartDAO {
         clearCart(cartId);
     }*/
 
-}

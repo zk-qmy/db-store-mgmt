@@ -88,8 +88,10 @@ public class ProductsDAO {
         }
         return productKeys;
     }
+    // Get all category tags
     public List<String> getAllCategs(){
         List<String> categories = new ArrayList<>();
+        categories.add("Start filtering"); // set default(1st option) view of combobox
         Connection connection = null;
         try {
             connection= DatabaseConn.getInstance().getConnection();
@@ -108,13 +110,16 @@ public class ProductsDAO {
         }
         return categories;
     }
+
+    // Get all Product with a certain categ name
     public List<Products> findProductsByCateg(String categName){
         Connection connection=null;
         List<Products> productsList = new ArrayList<>();
         try{
             connection = DatabaseConn.getInstance().getConnection();
-            String query = "SELECT * FROM Products JOIN Categories ON Products.categoryID = Categories.id";
+            String query = "SELECT * FROM Products JOIN Categories ON Products.categoryID = Categories.id WHERE Categories.name = ?";
             PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, categName);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Products product = new Products();
@@ -122,6 +127,7 @@ public class ProductsDAO {
                 product.setProductName(rs.getString("name"));
                 product.setStockQuantity(rs.getInt("quantity"));
                 product.setPrice(rs.getDouble("price"));
+                productsList.add(product);
             }
 
         }catch (SQLException e){
@@ -131,5 +137,31 @@ public class ProductsDAO {
             DatabaseConn.getInstance().closeConn(connection);
         }
         return productsList;
+    }
+
+    // Update Stock of a product with id
+    public void updateProductStock(int newStockQuantity, int productID){
+        Connection connection = null;
+        try {
+            String query = "UPDATE Products SET quantity = ? WHERE id = ?";
+            connection = DatabaseConn.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, newStockQuantity);
+            statement.setInt(2, productID);
+            // Execute the update query
+            int rowsUpdated = statement.executeUpdate();
+
+            // check if the update was successful
+            if (rowsUpdated > 0) {
+                System.out.println("Stock updated successfully for product ID: " + productID);
+            } else {
+                System.out.println("No product found with ID: " + productID);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
     }
 }

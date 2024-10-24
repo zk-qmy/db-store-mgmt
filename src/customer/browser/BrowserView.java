@@ -28,7 +28,7 @@ public class BrowserView extends JFrame {
 
         //ComboBox
         categoryComboBox = new JComboBox<>();
-        categoryComboBox.setSelectedItem(null);
+        //categoryComboBox.setSelectedItem(null);
         //categoryComboBox.setPreferredSize(new Dimension(50,100));
         comboBoxPan = new JPanel();
         comboBoxPan.add(categoryComboBox);
