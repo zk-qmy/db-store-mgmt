@@ -1,5 +1,7 @@
 package register.login;
 
+import app.App;
+import app.HomeScreen;
 import register.Users.Users;
 import register.Users.UsersDAO;
 
@@ -10,10 +12,12 @@ import java.awt.event.ActionListener;
 public class LoginController implements ActionListener {
     private LoginView view;
     private UsersDAO usersDAO;
+    private HomeScreen homeScreen;
 
-    public LoginController(LoginView view, UsersDAO usersDAO) {
+    public LoginController(LoginView view, UsersDAO usersDAO, HomeScreen homeScreen) {
         this.view = view;
         this.usersDAO = usersDAO;
+        this.homeScreen = homeScreen;
 
         view.getBtnLogin().addActionListener(this);
     }
@@ -32,8 +36,14 @@ public class LoginController implements ActionListener {
             else {
                 System.out.println(" GO to browse view!!!!!!");
                 //App.getInstance().setCurrentUser(user); // reconsider if it can hadlenultiple users
-                //view.dispose();
-                //App.getInstance().getHomeScreen().setVisible(true);
+                view.dispose();
+                homeScreen.dispose();
+                if (user.getRoleID() == 1){ // admin
+
+                } else if (user.getRoleID() == 2) { // customer
+                    App.getInstance().getBrowserView().setVisible(true);
+                }
+
             }
         }
     }

@@ -38,6 +38,7 @@ public class CartController implements ActionListener {
         else if (e.getSource() == view.getBtnOrder()) {
             System.out.println("button place order pressed!");
             placeOrder();
+            view.setVisible(false);
         }
     }
 

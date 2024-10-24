@@ -61,7 +61,7 @@ public class App {
         // Initialize controllers
         this.homeScreenController = new HomeScreenController(registerView,loginView,homeScreen);
         this.registerController = new RegisterController(registerView, usersDAO, homeScreen);
-        this.loginController = new LoginController(loginView, usersDAO);
+        this.loginController = new LoginController(loginView, usersDAO, homeScreen);
         this.browserController = new BrowserController(browserView, productsDAO, ordersDAO, orderDetailsDAO);
         this.orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
         this.cartController = new CartController(cartView, orderDetailsDAO, productsDAO);

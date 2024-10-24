@@ -30,22 +30,23 @@ public class UsersDAO {
     public Users loadUser(String username, String password) {
         Connection connection = null;
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users WHERE UserName = ? AND Password = ?");
+            connection = DatabaseConn.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users WHERE username = ? AND password = ?");
             statement.setString(1, username);
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 Users user = new Users();
-                user.setUserID(resultSet.getInt("userID"));
+                user.setUserID(resultSet.getInt("id"));
                 user.setName(resultSet.getString("name"));
                 user.setUsername(resultSet.getString("username"));
                 user.setPassword(resultSet.getString("password"));
                 user.setAddress(resultSet.getString("address"));
                 user.setPhoneNum(resultSet.getString("phone"));
+                user.setRoleID(resultSet.getInt("roleID"));
                 return user;
             }
-
         } catch (SQLException e) {
             System.out.println("Database access error!");
             e.printStackTrace();

@@ -25,6 +25,7 @@ public class BrowserView extends JFrame {
         this.setTitle("Our Products");
         this.setLayout(new BorderLayout());
         this.setSize(1020, 800);
+        this.setLocationRelativeTo(null);
 
         //ComboBox
         categoryComboBox = new JComboBox<>();

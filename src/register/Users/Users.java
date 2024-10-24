@@ -7,6 +7,15 @@ public class Users {
     private String password;
     private String address;
     private String phoneNum;
+    private int roleID;
+
+    public void setRoleID(int roleID) {
+        this.roleID = roleID;
+    }
+
+    public int getRoleID() {
+        return roleID;
+    }
 
     public void setUserID(int userID) {
         this.userID = userID;
