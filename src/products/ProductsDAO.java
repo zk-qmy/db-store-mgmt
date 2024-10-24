@@ -112,6 +112,7 @@ public class ProductsDAO {
         Connection connection=null;
         List<Products> productsList = new ArrayList<>();
         try{
+            connection = DatabaseConn.getInstance().getConnection();
             String query = "SELECT * FROM Products JOIN Categories ON Products.categoryID = Categories.id";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();

@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 
 public class BrowserView extends JFrame {
     private JComboBox<String> categoryComboBox;
+    private JPanel comboBoxPan;
     private JButton btnFind = new JButton("Find product");
     private JButton btnBrowse = new JButton(("See all Products"));
     private JButton btnBuy = new JButton("Start Purchasing"); // navigate to cart view
@@ -28,7 +29,10 @@ public class BrowserView extends JFrame {
         //ComboBox
         categoryComboBox = new JComboBox<>();
         categoryComboBox.setSelectedItem(null);
-        categoryComboBox.setPreferredSize(new Dimension(50, 100));
+        //categoryComboBox.setPreferredSize(new Dimension(50,100));
+        comboBoxPan = new JPanel();
+        comboBoxPan.add(categoryComboBox);
+        //comboBoxPan.setPreferredSize(new Dimension(50, 20));
 
         // LabelTit
         JLabel labelTit = new JLabel("Explore Our Product!");
@@ -42,11 +46,38 @@ public class BrowserView extends JFrame {
         JPanel controlPan = new JPanel();
         controlPan.setLayout(new BoxLayout(controlPan, BoxLayout.Y_AXIS));
         controlPan.setBorder(new EmptyBorder(40, 20, 40, 20));
-        controlPan.add(categoryComboBox);
-        controlPan.add(btnBuy);
+
+        /*// Button panel
+        JPanel buttonPan = new JPanel();
+        //Pan.add(comboBoxPan);
+        buttonPan.setLayout(new BoxLayout(buttonPan, BoxLayout.Y_AXIS));
+        buttonPan.add(btnBuy);
+        buttonPan.add(btnFind);
+        buttonPan.add(btnBrowse);
+        buttonPan.add(btnOrderHis);
+
+        controlPan.add(comboBoxPan);
+        controlPan.add(buttonPan);*/
+
+        // Center the buttons and add them to the control panel
+        btnFind.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnBrowse.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnBuy.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnOrderHis.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Add components to control panel
+        controlPan.add(Box.createVerticalStrut(10)); // Spacer
+        //controlPan.add(Box.createVerticalStrut(20)); // Spacer for spacing between elements
         controlPan.add(btnFind);
+        controlPan.add(Box.createVerticalStrut(10)); // Spacer
         controlPan.add(btnBrowse);
+        controlPan.add(Box.createVerticalStrut(10)); // Spacer
+        controlPan.add(btnBuy);
+        controlPan.add(Box.createVerticalStrut(10)); // Spacer
         controlPan.add(btnOrderHis);
+        controlPan.add(Box.createVerticalStrut(10));
+        controlPan.add(comboBoxPan);
+
         // Product panel - grid
         productPan = new JPanel();
         productPan.setLayout(new GridLayout(0, 4, 10, 30)); // dynamic rows, 4 cols
