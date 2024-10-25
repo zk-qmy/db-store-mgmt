@@ -1,4 +1,4 @@
-package register.Roles;
+package register.roles;
 public class Roles {
     private int roleID;
     private String roleName;

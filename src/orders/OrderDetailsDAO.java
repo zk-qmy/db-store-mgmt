@@ -4,9 +4,7 @@ import app.DatabaseConn;
 import customer.cart.Cart;
 import customer.cart.CartLines;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class OrderDetailsDAO {
     private Connection connection;
@@ -22,20 +20,28 @@ public class OrderDetailsDAO {
         connection = null;
         try {
             connection = DatabaseConn.getInstance().getConnection();
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Orders VALUES (?, ?, ?, ?, ?)");
-            stmt.setInt(1, cart.getCartID());
-            //stmt.setInt(2, cart.getCusID());
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Orders(customerID, status) VALUES (?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, customerID);
+            stmt.setString(2, defaultStatus);
 
-            stmt.execute();
+            stmt.executeUpdate();
+            // Retrieve generated OrderID
+            ResultSet generatedKey = stmt.getGeneratedKeys();
+            int orderID = 0;
+            if (generatedKey.next()) {
+                orderID = generatedKey.getInt(1);
+            }
             stmt.close();
-            stmt = connection.prepareStatement("INSERT INTO OrderDetails VALUES (?, ?, ?, ?)");
-            for (CartLines line : cart.getLines()) {
-                stmt.setInt(2, line.getCartID());
-                stmt.setInt(3, line.getProductID());
-                stmt.setInt(4, line.getOrderQuantity());
-                stmt.setDouble(5, line.getCost());
 
-                stmt.execute();
+            stmt = connection.prepareStatement("INSERT INTO OrderDetails(orderID, productID, orderQuantity) VALUES (?, ?, ?)");
+            for (CartLines line : cart.getLines()) {
+                stmt.setInt(1, orderID);
+                stmt.setInt(2, line.getProductID());
+                stmt.setInt(3, line.getOrderQuantity());
+                //stmt.setDouble(5, line.getCost());
+
+                stmt.executeUpdate();
             }
             stmt.close();
             return true;

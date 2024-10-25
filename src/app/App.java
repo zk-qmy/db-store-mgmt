@@ -1,5 +1,6 @@
 package app;
 
+import admin.productsmgmt.AdProductsView;
 import customer.browser.BrowserController;
 import customer.browser.BrowserView;
 import customer.cart.CartController;
@@ -12,7 +13,7 @@ import orders.OrderDetailsDAO;
 import products.ProductsDAO;
 import register.createaccount.RegisterController;
 import register.createaccount.RegisterView;
-import register.Users.UsersDAO;
+import register.users.UsersDAO;
 import register.login.LoginController;
 import register.login.LoginView;
 
@@ -32,6 +33,7 @@ public class App {
     private final HomeScreen homeScreen;
     private final RegisterView registerView;
     private final LoginView loginView;
+    private final AdProductsView adProductsView;
 
     // Controllers
     private final HomeScreenController homeScreenController;
@@ -40,6 +42,7 @@ public class App {
     private final OrderHisController orderHisController;
     private final CartController cartController;
     private final BrowserController browserController;
+    //private final AdProductsController
 
 
 
@@ -54,6 +57,7 @@ public class App {
         this.homeScreen = new HomeScreen();
         this.registerView = new RegisterView();
         this.loginView = new LoginView();
+        this.adProductsView = new AdProductsView(productsDAO, ordersDAO, orderDetailsDAO);
         this.orderHisView = new OrderHisView(ordersDAO, orderDetailsDAO);
         this.cartView = new CartView();
         this.browserView = new BrowserView(productsDAO, ordersDAO, orderDetailsDAO);
@@ -63,8 +67,9 @@ public class App {
         this.registerController = new RegisterController(registerView, usersDAO, homeScreen);
         this.loginController = new LoginController(loginView, usersDAO, homeScreen);
         this.browserController = new BrowserController(browserView, productsDAO, ordersDAO, orderDetailsDAO);
+        //System.out.println("ordersDAO: " + ordersDAO);
         this.orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
-        this.cartController = new CartController(cartView, orderDetailsDAO, productsDAO);
+        this.cartController = new CartController(cartView, orderDetailsDAO, productsDAO, usersDAO);
 
 
     }
@@ -81,6 +86,10 @@ public class App {
         return orderHisView;
     }
 
+    public AdProductsView getAdProductsView() {
+        return adProductsView;
+    }
+
     public CartView getCartView() {
         return cartView;
     }
@@ -91,6 +100,7 @@ public class App {
     public RegisterView getRegisterView() {
         return registerView;
     }
+    public LoginView getLoginView() {return loginView;}
     public HomeScreen getHomeScreen() {
         return homeScreen;
     }

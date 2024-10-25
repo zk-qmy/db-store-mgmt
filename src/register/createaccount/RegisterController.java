@@ -2,7 +2,7 @@ package register.createaccount;
 
 import app.App;
 import app.HomeScreen;
-import register.Users.UsersDAO;
+import register.users.UsersDAO;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

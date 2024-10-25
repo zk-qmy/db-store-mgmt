@@ -1,4 +1,4 @@
-package register.Users;
+package register.users;
 
 public class Users {
     private int userID;

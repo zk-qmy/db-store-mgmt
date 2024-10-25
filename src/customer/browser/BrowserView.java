@@ -48,18 +48,6 @@ public class BrowserView extends JFrame {
         controlPan.setLayout(new BoxLayout(controlPan, BoxLayout.Y_AXIS));
         controlPan.setBorder(new EmptyBorder(40, 20, 40, 20));
 
-        /*// Button panel
-        JPanel buttonPan = new JPanel();
-        //Pan.add(comboBoxPan);
-        buttonPan.setLayout(new BoxLayout(buttonPan, BoxLayout.Y_AXIS));
-        buttonPan.add(btnBuy);
-        buttonPan.add(btnFind);
-        buttonPan.add(btnBrowse);
-        buttonPan.add(btnOrderHis);
-
-        controlPan.add(comboBoxPan);
-        controlPan.add(buttonPan);*/
-
         // Center the buttons and add them to the control panel
         btnFind.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnBrowse.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -119,7 +107,7 @@ public class BrowserView extends JFrame {
         // add product to panel
         // TO DO: adjust this
         if (productsList.isEmpty()) {
-            JLabel emptyList = new JLabel(" No products available!");
+            JLabel emptyList = new JLabel(" No product available!");
         } else {
             // Add each product to the product panel
             for (Products product : productsList) {

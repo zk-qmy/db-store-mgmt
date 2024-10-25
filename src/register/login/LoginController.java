@@ -2,8 +2,9 @@ package register.login;
 
 import app.App;
 import app.HomeScreen;
-import register.Users.Users;
-import register.Users.UsersDAO;
+import register.Session;
+import register.users.Users;
+import register.users.UsersDAO;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -36,10 +37,11 @@ public class LoginController implements ActionListener {
             else {
                 System.out.println(" GO to browse view!!!!!!");
                 //App.getInstance().setCurrentUser(user); // reconsider if it can hadlenultiple users
+                Session.getInstance().setUserSession(username, user); // Store session
                 view.dispose();
                 homeScreen.dispose();
                 if (user.getRoleID() == 1){ // admin
-
+                    App.getInstance().getAdProductsView().setVisible(true);
                 } else if (user.getRoleID() == 2) { // customer
                     App.getInstance().getBrowserView().setVisible(true);
                 }

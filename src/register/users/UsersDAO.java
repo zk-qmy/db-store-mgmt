@@ -1,7 +1,9 @@
-package register.Users;
+package register.users;
 
 import app.DatabaseConn;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersDAO {
     // Add user (ad + cus)
@@ -55,5 +57,28 @@ public class UsersDAO {
     }
     // Update user (ad)
     // delete user (ad)
+
+    // Get all userID
+    public List<Integer> getAllUserID() {
+        List<Integer> userIDList = new ArrayList<>();
+        Connection connection = null;
+        try {
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = " SELECT id FROM Users";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            while(resultSet.next()) {
+                userIDList.add(resultSet.getInt("id"));
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return  null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return userIDList;
+    }
+
 }
 

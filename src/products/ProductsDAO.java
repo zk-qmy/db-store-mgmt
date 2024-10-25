@@ -65,8 +65,78 @@ public class ProductsDAO {
 
 
     // Add
-    //Update
+    public boolean addProductToDB(String productName, int quantity, double price, int categID){
+        Connection connection= null;
+        try{
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = "INSERT INTO Products(name, quantity, price, categoryid) VALUES (?,?,?,?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, productName);
+            statement.setInt(2, quantity);
+            statement.setDouble(3, price);
+            statement.setInt(4, categID);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return true;
+
+    }
+
+    // Update
+    public boolean updateProductToDB(int productID, String productName, int quantity, double price, int categID) {
+        Connection connection= null;
+        try{
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = "UPDATE Products SET name = ?, quantity = ?, price = ?, categoryid = ? WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, productName);
+            statement.setInt(2, quantity);
+            statement.setDouble(3, price);
+            statement.setInt(4, categID);
+            statement.setInt(5, productID);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return true;
+    }
+
     // delete
+    public boolean deleteProductFromDB(int productID) {
+        Connection connection = null;
+        try {
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = "DELETE FROM Products WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, productID);
+
+            int rowsDeleted = statement.executeUpdate();
+
+            // Check if any rows were deleted
+            if (rowsDeleted > 0) {
+                System.out.println("Product deleted successfully: ID = " + productID);
+                return true;
+            } else {
+                System.out.println("No product found with ID: " + productID);
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+    }
+
     // Get product id key
     public List<Integer> getProductKeyID() {
         Connection connection = null;

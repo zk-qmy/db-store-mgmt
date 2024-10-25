@@ -22,9 +22,9 @@ public class HomeScreenController implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == homeScreen.getBtnCreateAccount()) {
-            registerView.setVisible(true);
+            App.getInstance().getRegisterView().setVisible(true);
         } else if (e.getSource() == homeScreen.getBtnLogin()) {
-            loginView.setVisible(true);
+            App.getInstance().getLoginView().setVisible(true);
         }
     }
 }

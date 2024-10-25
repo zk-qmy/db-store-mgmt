@@ -5,6 +5,7 @@ import orders.Orders;
 import orders.OrdersDAO;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.List;
@@ -13,7 +14,7 @@ public class OrderHisView extends JFrame{
     private JButton btnFind = new JButton("Find Order");
     private OrdersDAO ordersDAO;
     private OrderDetailsDAO orderDetailsDAO;
-
+    private JPanel orderPan;
 
     public OrderHisView(OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO) {
         this.ordersDAO = ordersDAO;
@@ -37,17 +38,14 @@ public class OrderHisView extends JFrame{
         controlPan.setBorder(new EmptyBorder(40, 20, 40, 20));
         controlPan.add(btnFind);
 
-        // Product panel - grid
-        JPanel orderPan = new JPanel();
+        // Order panel - grid
+        orderPan = new JPanel();
         orderPan.setLayout(new BoxLayout(orderPan, BoxLayout.Y_AXIS));
         orderPan.setBorder(new EmptyBorder(0, 20, 30, 20));
         // Scrollable Pane
         JScrollPane scrollPan = new JScrollPane(orderPan);
         scrollPan.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPan.setPreferredSize(new Dimension(600, 400));
-        // border for each product box
-        //new OrderHisController(this, ordersDAO, orderDetailsDAO);
-        //add(orderPan, BorderLayout.CENTER);
 
         parentPan.add(controlPan, BorderLayout.SOUTH);
         parentPan.add(scrollPan, BorderLayout.CENTER);
@@ -61,7 +59,39 @@ public class OrderHisView extends JFrame{
 
     }
     public void displayOrders(List<Orders> ordersList) {
+        orderPan.removeAll();
 
+        Border boxBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
+        if (ordersList.isEmpty()) {
+            JLabel emptyList = new JLabel("No order available");
+        } else {
+            for (Orders order : ordersList) {
+                JPanel box = new JPanel();
+                box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
+                box.setBorder(boxBorder);
+                box.setPreferredSize(new Dimension(750, 50));
+
+                JLabel orderID = new JLabel("Order ID: "+ order.getOrderID());
+                JLabel status = new JLabel("Status: "+ order.getStatus());
+                JLabel total = new JLabel("Total: "+order.getTotal());
+
+                orderID.setFont(new Font("Arial", Font.BOLD, 15));
+                total.setFont(new Font("Arial", Font.PLAIN, 18));
+                status.setFont(new Font("Arial", Font.BOLD, 20));
+
+                orderID.setAlignmentX(Component.CENTER_ALIGNMENT);
+                total.setAlignmentX(Component.CENTER_ALIGNMENT);
+                status.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                box.add(orderID);
+                box.add(total);
+                box.add(status);
+
+                orderPan.add(box);
+            }
+        }
+        orderPan.revalidate();;
+        orderPan.repaint();
     }
 
     public JButton getBtnFind() {

@@ -8,31 +8,34 @@ import java.util.List;
 import orders.OrderDetailsDAO;
 import products.Products;
 import products.ProductsDAO;
+import register.users.UsersDAO;
+import register.Session;
 
 public class CartController implements ActionListener {
     private CartView view;
     private CartDAO cartDao;
     private OrderDetailsDAO orderDetailsDAO;
     private ProductsDAO productsDao;
+    private UsersDAO usersDAO;
     private Cart cart = null;
 
-    public CartController(CartView view, OrderDetailsDAO orderDetailsDAO, ProductsDAO productsDao) {
+    public CartController(CartView view, OrderDetailsDAO orderDetailsDAO, ProductsDAO productsDao, UsersDAO usersDAO) {
         this.orderDetailsDAO = orderDetailsDAO;
         this.view = view;
         this.productsDao = productsDao;
+        this.usersDAO = usersDAO;
 
         view.getBtnAdd().addActionListener(this);
         view.getBtnOrder().addActionListener(this);
 
         cart = new Cart();
         System.out.println("CartController created");
-
     }
 
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.getBtnAdd()){
-            System.out.println("button Add to cart pressed!");
+            //System.out.println("button Add to cart pressed!");
             addProduct();
         }
         else if (e.getSource() == view.getBtnOrder()) {
@@ -42,14 +45,6 @@ public class CartController implements ActionListener {
         }
     }
 
-    private void makeCart() {
-        JOptionPane.showMessageDialog(null, "This function is being implemented!");
-
-        /* Remember to update new orderQuantity of products!
-        product.setQuantity(product.getQuantity() - orderQuantity); // update new orderQuantity!!
-        cartDao.saveProduct(product); // and save this product back right away!!!
-        */
-    }
     public void placeOrder(){
         // TO DO: show order placed message + save the order to Orders table + all lines to OrderDetails. if not
         // hit the button, do not save the info yet.
@@ -63,7 +58,21 @@ public class CartController implements ActionListener {
             productsDao.updateProductStock(newStockQuantity, productID);
         }
         String defaultStatus = "pending";
-        int customerID = 2;
+        int customerID = 0;
+        String customerid = JOptionPane.showInputDialog("Enter your userID: ");
+        try {
+            customerID = Integer.parseInt(customerid);
+        } catch(NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid user ID!");
+            return;
+        }
+        // TO DO: check if customerID exist in Users table
+        List<Integer> userIDList = usersDAO.getAllUserID();
+        if (!userIDList.contains(customerID)) {
+            JOptionPane.showMessageDialog(null,"Invalid user ID");
+            return;
+        }
+
         // Save the cart and its details into the database
         orderDetailsDAO.addToOrderDB(cart, defaultStatus, customerID);
         // Optionally, clear the cart or show a success message
