@@ -13,17 +13,14 @@ import register.Session;
 
 public class CartController implements ActionListener {
     private CartView view;
-    private CartDAO cartDao;
     private OrderDetailsDAO orderDetailsDAO;
     private ProductsDAO productsDao;
-    private UsersDAO usersDAO;
     private Cart cart = null;
 
-    public CartController(CartView view, OrderDetailsDAO orderDetailsDAO, ProductsDAO productsDao, UsersDAO usersDAO) {
+    public CartController(CartView view, OrderDetailsDAO orderDetailsDAO, ProductsDAO productsDao) {
         this.orderDetailsDAO = orderDetailsDAO;
         this.view = view;
         this.productsDao = productsDao;
-        this.usersDAO = usersDAO;
 
         view.getBtnAdd().addActionListener(this);
         view.getBtnOrder().addActionListener(this);
@@ -58,7 +55,7 @@ public class CartController implements ActionListener {
             productsDao.updateProductStock(newStockQuantity, productID);
         }
         String defaultStatus = "pending";
-        int customerID = 0;
+        /*int customerID = 0;
         String customerid = JOptionPane.showInputDialog("Enter your userID: ");
         try {
             customerID = Integer.parseInt(customerid);
@@ -71,7 +68,8 @@ public class CartController implements ActionListener {
         if (!userIDList.contains(customerID)) {
             JOptionPane.showMessageDialog(null,"Invalid user ID");
             return;
-        }
+        }*/
+        int customerID = Session.getInstance().getCurrentUser().getUserID();
 
         // Save the cart and its details into the database
         orderDetailsDAO.addToOrderDB(cart, defaultStatus, customerID);

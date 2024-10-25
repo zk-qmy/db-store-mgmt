@@ -1,20 +1,12 @@
 package app;
 
-import register.createaccount.RegisterView;
-import register.login.LoginView;
-
-import javax.print.DocFlavor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HomeScreenController implements ActionListener {
-    private RegisterView registerView;
-    private LoginView loginView;
     private HomeScreen homeScreen;
-    public HomeScreenController(RegisterView registerView, LoginView loginView, HomeScreen homeScreen){
+    public HomeScreenController(HomeScreen homeScreen){
         this.homeScreen = homeScreen;
-        this.registerView = registerView;
-        this.loginView = loginView;
 
         homeScreen.getBtnLogin().addActionListener(this);
         homeScreen.getBtnCreateAccount().addActionListener(this);

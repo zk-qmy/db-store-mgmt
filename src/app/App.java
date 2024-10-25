@@ -15,6 +15,7 @@ import customer.orderhistory.OrderHisView;
 import orders.OrdersDAO;
 import orders.OrderDetailsDAO;
 import products.ProductsDAO;
+import register.Session;
 import register.createaccount.RegisterController;
 import register.createaccount.RegisterView;
 import register.users.UsersDAO;
@@ -25,7 +26,6 @@ public class App {
     private static App instance;
 
     // Main components
-
     private final UsersDAO usersDAO;
     private final OrdersDAO ordersDAO;
     private final OrderDetailsDAO orderDetailsDAO;
@@ -68,20 +68,20 @@ public class App {
         this.adProductsView = new AdProductsView(productsDAO, ordersDAO, orderDetailsDAO);
         this.orderHisView = new OrderHisView(ordersDAO, orderDetailsDAO);
         this.cartView = new CartView();
-        this.browserView = new BrowserView(productsDAO, ordersDAO, orderDetailsDAO);
+        this.browserView = new BrowserView();
         this.adUserView = new AdUserView();
         this.adOrdersView = new AdOrdersView();
-        this.dashBoardView = new DashBoardView(adProductsView, adUserView);
+        this.dashBoardView = new DashBoardView();
 
 
         // Initialize controllers
-        this.homeScreenController = new HomeScreenController(registerView,loginView,homeScreen);
+        this.homeScreenController = new HomeScreenController(homeScreen);
         this.registerController = new RegisterController(registerView, usersDAO, homeScreen);
         this.loginController = new LoginController(loginView, usersDAO, homeScreen);
         this.browserController = new BrowserController(browserView, productsDAO, ordersDAO, orderDetailsDAO);
         //System.out.println("ordersDAO: " + ordersDAO);
         this.orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
-        this.cartController = new CartController(cartView, orderDetailsDAO, productsDAO, usersDAO);
+        this.cartController = new CartController(cartView, orderDetailsDAO, productsDAO);
         this.adProductsController = new AdProductsController(adProductsView, productsDAO);
 
     }

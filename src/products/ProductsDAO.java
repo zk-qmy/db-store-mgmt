@@ -165,14 +165,14 @@ public class ProductsDAO {
         Connection connection = null;
         try {
             connection= DatabaseConn.getInstance().getConnection();
-            String query = "SELECT id, name FROM Categories";
+            String query = "SELECT name FROM Categories";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
 
             while(rs.next()) {
-                int categID = rs.getInt("id");
-                String categName = rs.getString("name");
-                categories.add(categID +" - "+categName);
+                //int categID = rs.getInt("id");
+                //String categName = rs.getString("name");
+                categories.add(rs.getString("name"));
             }
         }catch (SQLException e){
             e.printStackTrace();

@@ -8,22 +8,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DashBoardView extends JFrame {
-    private AdProductsView adProductsView;
-    private AdUserView adUserView;
-
     private JPanel mainPanel, sidebarPanel, contentPanel;
     private JButton btnManageUsers, btnManageOrders, viewReportsButton, btnLogout, btnManageProducts;
     private JLabel dashboardTitle;
 
-    public DashBoardView(AdProductsView adProductsView, AdUserView adUserView ) {
-        this.adProductsView = adProductsView;
-        this.adUserView = adUserView;
-
+    public DashBoardView() {
         // Frame settings
-        setTitle("Admin Dashboard");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        this.setTitle("Admin Dashboard");
+        this.setSize(800, 600);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
 
         // Main Panel
         mainPanel = new JPanel(new BorderLayout());

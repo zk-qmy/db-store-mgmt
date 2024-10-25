@@ -1,11 +1,7 @@
 package customer.browser;
-import orders.OrderDetailsDAO;
-import orders.OrdersDAO;
-import products.Products;
-import products.ProductsDAO;
 
+import products.Products;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.util.List;
@@ -20,7 +16,7 @@ public class BrowserView extends JFrame {
     private JButton btnOrderHis = new JButton("See Order History");
     private JPanel productPan;
 
-    public BrowserView(ProductsDAO productsDAO, OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO) {
+    public BrowserView() {
 
         this.setTitle("Our Products");
         this.setLayout(new BorderLayout());
@@ -29,8 +25,6 @@ public class BrowserView extends JFrame {
 
         //ComboBox
         categoryComboBox = new JComboBox<>();
-        //categoryComboBox.setSelectedItem(null);
-        //categoryComboBox.setPreferredSize(new Dimension(50,100));
         comboBoxPan = new JPanel();
         comboBoxPan.add(categoryComboBox);
         //comboBoxPan.setPreferredSize(new Dimension(50, 20));
