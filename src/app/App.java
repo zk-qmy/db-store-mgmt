@@ -1,5 +1,6 @@
 package app;
 
+import admin.productsmgmt.AdProductsController;
 import admin.productsmgmt.AdProductsView;
 import customer.browser.BrowserController;
 import customer.browser.BrowserView;
@@ -42,7 +43,7 @@ public class App {
     private final OrderHisController orderHisController;
     private final CartController cartController;
     private final BrowserController browserController;
-    //private final AdProductsController
+    private final AdProductsController adProductsController;
 
 
 
@@ -70,7 +71,7 @@ public class App {
         //System.out.println("ordersDAO: " + ordersDAO);
         this.orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
         this.cartController = new CartController(cartView, orderDetailsDAO, productsDAO, usersDAO);
-
+        this.adProductsController = new AdProductsController(adProductsView, productsDAO);
 
     }
 

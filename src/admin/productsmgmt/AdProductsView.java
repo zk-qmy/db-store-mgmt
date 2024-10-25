@@ -77,9 +77,6 @@ public class AdProductsView  extends JFrame {
         JScrollPane scrollPan = new JScrollPane(productPan);
         scrollPan.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPan.setPreferredSize(new Dimension(600, 400));
-        // border for each product box
-        // new BrowserController(this, productsDAO, ordersDAO, orderDetailsDAO);
-        //add(productPan, BorderLayout.CENTER);
 
         parentPan.add(controlPan, BorderLayout.EAST);
         parentPan.add(scrollPan, BorderLayout.CENTER);

@@ -12,14 +12,15 @@ import java.util.List;
 public class AdProductsController implements ActionListener{
     private ProductsDAO productsDAO;
     private final AdProductsView view;
-    private OrdersDAO ordersDAO;
-    private OrderDetailsDAO ordersDetails;
+    //private OrdersDAO ordersDAO;
+    //private OrderDetailsDAO ordersDetails;
 
-    public AdProductsController(AdProductsView view, ProductsDAO productsDAO, OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO) {
+    public AdProductsController(AdProductsView view, ProductsDAO productsDAO) {
+        System.out.println("adproductcontroller created!!!!!");
         this.productsDAO = productsDAO;
         this.view = view;
-        this.ordersDAO = ordersDAO;
-        this.ordersDetails = orderDetailsDAO;
+        //this.ordersDAO = ordersDAO;
+        //this.ordersDetails = orderDetailsDAO;
 
         loadProductList();
         loadCategTags();
@@ -32,16 +33,21 @@ public class AdProductsController implements ActionListener{
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.getBtnFind()) {
+            System.out.println("find in admin triggered");
             findProduct();
         } else if (e.getSource() == view.getBtnAdd()) {
+            System.out.println("add in admin triggered");
             boolean add = true;
             addOrupdateProduct(add);
         } else if (e.getSource() == view.getBtnDelete()) {
+            System.out.println("delete in admin triggered");
             deleteProduct();
         } else if (e.getSource() == view.getBtnUpdate()) {
+            System.out.println("update in admin triggered");
             boolean add= false;
             addOrupdateProduct(add);
         } else if (e.getSource() == view.getBtnBrowse()) {
+            System.out.println("browse in admin triggered");
             loadProductList();
         }
     }
@@ -140,6 +146,7 @@ public class AdProductsController implements ActionListener{
             success = productsDAO.updateProductToDB(productID, productName,quantity,price,categoryID);
             confirmProcess(success, "update");
         }
+        loadProductList();
     }
 
     public void confirmProcess(boolean success, String task){
@@ -168,6 +175,7 @@ public class AdProductsController implements ActionListener{
         } else {
             JOptionPane.showMessageDialog(null, "Failed to delete product!");
         }
+        loadProductList();
     }
 
 }
