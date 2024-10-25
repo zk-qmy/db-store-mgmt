@@ -22,6 +22,7 @@ public class AdProductsView  extends JFrame {
     private JButton btnDelete = new JButton("Delete Product");
     private JButton btnUpdate = new JButton("Update product");
     private JPanel productPan;
+    private JButton btnBack = new JButton("Back");
 
     public AdProductsView (ProductsDAO productsDAO, OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO) {
         this.setTitle("Our Products");
@@ -68,6 +69,7 @@ public class AdProductsView  extends JFrame {
         controlPan.add(btnUpdate);
         controlPan.add(Box.createVerticalStrut(10));
         controlPan.add(comboBoxPan);
+        controlPan.add(btnBack);
 
         // Product panel - grid
         productPan = new JPanel();
@@ -90,6 +92,7 @@ public class AdProductsView  extends JFrame {
     public JButton getBtnAdd() {return btnAdd;}
     public JButton getBtnDelete() {return btnDelete;}
     public JButton getBtnUpdate() {return btnUpdate;}
+    public JButton getBtnBack() {return btnBack;}
 
     public void displayProducts(List<Products> productsList) {
         // clear existing components

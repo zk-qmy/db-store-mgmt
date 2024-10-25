@@ -1,5 +1,6 @@
 package admin.productsmgmt;
 
+import app.App;
 import orders.OrderDetailsDAO;
 import orders.OrdersDAO;
 import products.ProductsDAO;
@@ -29,26 +30,25 @@ public class AdProductsController implements ActionListener{
         view.getBtnBrowse().addActionListener(this);
         view.getBtnUpdate().addActionListener(this);
         view.getBtnFind().addActionListener(this);
+        view.getBtnBack().addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.getBtnFind()) {
-            System.out.println("find in admin triggered");
             findProduct();
         } else if (e.getSource() == view.getBtnAdd()) {
-            System.out.println("add in admin triggered");
             boolean add = true;
             addOrupdateProduct(add);
         } else if (e.getSource() == view.getBtnDelete()) {
-            System.out.println("delete in admin triggered");
             deleteProduct();
         } else if (e.getSource() == view.getBtnUpdate()) {
-            System.out.println("update in admin triggered");
             boolean add= false;
             addOrupdateProduct(add);
         } else if (e.getSource() == view.getBtnBrowse()) {
-            System.out.println("browse in admin triggered");
             loadProductList();
+        } else if (e.getSource() == view.getBtnBack()) {
+            view.dispose();
+            App.getInstance().getDashBoardView().setVisible(true);
         }
     }
     public void findProduct() {

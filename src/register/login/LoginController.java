@@ -36,8 +36,9 @@ public class LoginController implements ActionListener {
             }
             else {
                 System.out.println(" GO to browse view!!!!!!");
-                //App.getInstance().setCurrentUser(user); // reconsider if it can hadlenultiple users
-                Session.getInstance().setUserSession(username, user); // Store session
+
+                Users currentUser = usersDAO.getUserByUsername(username);
+                Session.getInstance().setCurrentUser(currentUser); // Store session
                 view.dispose();
                 homeScreen.dispose();
                 if (user.getRoleID() == 1){ // admin

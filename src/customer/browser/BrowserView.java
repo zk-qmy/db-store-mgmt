@@ -15,6 +15,7 @@ public class BrowserView extends JFrame {
     private JButton btnBuy = new JButton("Start Purchasing"); // navigate to cart view
     private JButton btnOrderHis = new JButton("See Order History");
     private JPanel productPan;
+    private JButton btnLogOut = new JButton("Logout");
 
     public BrowserView() {
 
@@ -60,6 +61,7 @@ public class BrowserView extends JFrame {
         controlPan.add(btnOrderHis);
         controlPan.add(Box.createVerticalStrut(10));
         controlPan.add(comboBoxPan);
+        controlPan.add(btnLogOut);
 
         // Product panel - grid
         productPan = new JPanel();
@@ -91,6 +93,7 @@ public class BrowserView extends JFrame {
         return btnBuy;
     }
     public JButton getBtnOrderHis() {return btnOrderHis;}
+    public JButton getBtnLogOut() {return btnLogOut;}
 
     public void displayProducts(List<Products> productsList) {
         // clear existing components

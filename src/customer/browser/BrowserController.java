@@ -31,6 +31,7 @@ public class BrowserController implements ActionListener {
         view.getBtnBrowse().addActionListener(this);
         view.getBtnBuy().addActionListener(this);
         view.getBtnOrderHis().addActionListener(this);
+        view.getBtnLogOut().addActionListener(this);
     }
 
 
@@ -46,6 +47,13 @@ public class BrowserController implements ActionListener {
             App.getInstance().getCartView().setVisible(true);
         } else if (e.getSource() == view.getBtnOrderHis()) {
             App.getInstance().getOrderHisView().setVisible(true);
+        } else if (e.getSource() == view.getBtnLogOut()) {
+            int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                view.dispose();
+                App.getInstance().getHomeScreen().setVisible(true);
+            }
+
         }
     }
     private CartView cartView = new CartView();
