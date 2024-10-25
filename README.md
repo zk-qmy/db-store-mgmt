@@ -13,7 +13,7 @@ to be updated
   
 ## Tentative project structure
 ```
-store-retail-management-system/
+store-retail-mgmt/
 │
 ├── src/
 │   ├── main/
@@ -22,18 +22,15 @@ store-retail-management-system/
 │   ├── product/
 │   │   ├── Product.java               # Product entity/model class
 │   │   ├── ProductDAO.java            # Data Access Object for Product
-│   │   ├── ProductService.java        # Service layer for Product
 │   │   └── ProductController.java     # Controller handling Product logic
 │   ├── order/
 │   │   ├── Order.java                 # Order entity/model class
 │   │   ├── OrderDAO.java              # Data Access Object for Order
-│   │   ├── OrderService.java          # Service layer for Order
 │   │   └── OrderController.java       # Controller handling Order logic
-│   ├── customer/
-│       ├── Customer.java              # Customer entity/model class
-│       ├── CustomerDAO.java           # Data Access Object for Customer
-│       ├── CustomerService.java       # Service layer for Customer
-│       └── CustomerController.java    # Controller handling Customer logic
+│   ├── user/
+│       ├── User.java              # Customer entity/model class
+│       ├── UserDAO.java           # Data Access Object for Customer
+│       └── UserController.java    # Controller handling Customer logic
 ├── resources/
 │   └── config.properties              # Database configuration file
 ├── sql/
