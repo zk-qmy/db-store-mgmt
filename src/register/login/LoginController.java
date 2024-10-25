@@ -41,7 +41,8 @@ public class LoginController implements ActionListener {
                 view.dispose();
                 homeScreen.dispose();
                 if (user.getRoleID() == 1){ // admin
-                    App.getInstance().getAdProductsView().setVisible(true);
+                    //App.getInstance().getAdProductsView().setVisible(true);
+                    App.getInstance().getDashBoardView().setVisible(true);
                 } else if (user.getRoleID() == 2) { // customer
                     App.getInstance().getBrowserView().setVisible(true);
                 }

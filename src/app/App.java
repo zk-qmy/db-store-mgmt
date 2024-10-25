@@ -1,7 +1,10 @@
 package app;
 
+import admin.dashboard.DashBoardView;
+import admin.ordersmgmt.AdOrdersView;
 import admin.productsmgmt.AdProductsController;
 import admin.productsmgmt.AdProductsView;
+import admin.usersmgmt.AdUserView;
 import customer.browser.BrowserController;
 import customer.browser.BrowserView;
 import customer.cart.CartController;
@@ -34,7 +37,11 @@ public class App {
     private final HomeScreen homeScreen;
     private final RegisterView registerView;
     private final LoginView loginView;
+
+    private final DashBoardView dashBoardView;
     private final AdProductsView adProductsView;
+    private final AdUserView adUserView;
+    private final AdOrdersView adOrdersView;
 
     // Controllers
     private final HomeScreenController homeScreenController;
@@ -62,6 +69,10 @@ public class App {
         this.orderHisView = new OrderHisView(ordersDAO, orderDetailsDAO);
         this.cartView = new CartView();
         this.browserView = new BrowserView(productsDAO, ordersDAO, orderDetailsDAO);
+        this.adUserView = new AdUserView();
+        this.adOrdersView = new AdOrdersView();
+        this.dashBoardView = new DashBoardView(adProductsView, adUserView);
+
 
         // Initialize controllers
         this.homeScreenController = new HomeScreenController(registerView,loginView,homeScreen);
@@ -105,6 +116,9 @@ public class App {
     public HomeScreen getHomeScreen() {
         return homeScreen;
     }
+    public DashBoardView getDashBoardView(){return dashBoardView;}
+    public AdUserView getAdUserView() {return adUserView;}
+    public AdOrdersView getAdOrdersView(){return adOrdersView;}
 
     // Main class
     public static void main(String[] args) {
