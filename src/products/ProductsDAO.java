@@ -236,4 +236,45 @@ public class ProductsDAO {
             DatabaseConn.getInstance().closeConn(connection);
         }
     }
+    // Get all product ID
+    public List<Integer> getAllProductID(){
+        Connection connection = null;
+        List<Integer> productIDList = new ArrayList<>();
+        try{
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = "SELECT id FROM Products";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                productIDList.add(resultSet.getInt("id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return productIDList;
+    }
+
+    // Get all categID
+    public List<Integer> getAllCategID(){
+        Connection connection = null;
+        List<Integer> productIDList = new ArrayList<>();
+        try{
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = "SELECT id FROM Categories";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                productIDList.add(resultSet.getInt("id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return productIDList;
+    }
 }

@@ -1,8 +1,6 @@
 package admin.productsmgmt;
 
 import app.App;
-import orders.OrderDetailsDAO;
-import orders.OrdersDAO;
 import products.ProductsDAO;
 import products.Products;
 import java.awt.event.ActionEvent;
@@ -13,15 +11,11 @@ import java.util.List;
 public class AdProductsController implements ActionListener{
     private ProductsDAO productsDAO;
     private final AdProductsView view;
-    //private OrdersDAO ordersDAO;
-    //private OrderDetailsDAO ordersDetails;
 
     public AdProductsController(AdProductsView view, ProductsDAO productsDAO) {
         System.out.println("adproductcontroller created!!!!!");
         this.productsDAO = productsDAO;
         this.view = view;
-        //this.ordersDAO = ordersDAO;
-        //this.ordersDetails = orderDetailsDAO;
 
         loadProductList();
         loadCategTags();
@@ -128,7 +122,11 @@ public class AdProductsController implements ActionListener{
             return;
         }
         // logic to verify categoryid
-
+        List<Integer> categIDList = productsDAO.getAllCategID();
+        if (!categIDList.contains(categoryID)) {
+            JOptionPane.showMessageDialog(null, "Category ID does not exist!");
+            return;
+        }
         // Navigate task
         boolean success;
         if (add){
@@ -167,6 +165,11 @@ public class AdProductsController implements ActionListener{
             productID = Integer.parseInt(id);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Invalid product id!");
+            return;
+        }
+        List<Integer> productIDList = productsDAO.getAllProductID();
+        if (!productIDList.contains(productID)){
+            JOptionPane.showMessageDialog(null, "Product ID does not exist!");
             return;
         }
         boolean success = productsDAO.deleteProductFromDB(productID);

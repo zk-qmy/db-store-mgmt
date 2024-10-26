@@ -17,7 +17,6 @@ import customer.orderhistory.OrderHisView;
 import orders.OrdersDAO;
 import orders.OrderDetailsDAO;
 import products.ProductsDAO;
-import register.Session;
 import register.createaccount.RegisterController;
 import register.createaccount.RegisterView;
 import register.users.UsersDAO;
@@ -126,8 +125,8 @@ public class App {
 
     // Main class
     public static void main(String[] args) {
-        App.getInstance().getHomeScreen().setVisible(true);
+        //App.getInstance().getHomeScreen().setVisible(true);
         // developing view
-        //App.getInstance().getAdUserView().setVisible(true);
+        App.getInstance().getAdOrdersView().setVisible(true);
     }
 }
