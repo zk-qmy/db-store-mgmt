@@ -56,7 +56,55 @@ public class UsersDAO {
         return null;
     }
     // Update user (ad)
+    public boolean updateUser(int userID, String name, String username, String password, String address, String phone, int roleID) {
+        Connection connection = null;
+        try {
+            String query = "UPDATE Users SET VALUES (?,?,?,?,?,?) WHERE id= ?";
+            connection = DatabaseConn.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            statement.setString(2,password);
+            statement.setString(3, name);
+            statement.setString(4, address);
+            statement.setString(5,phone);
+            statement.setInt(6, roleID);
+            statement.setInt(7, userID);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return true;
+    }
     // delete user (ad)
+    public boolean deleteUser(int userID) {
+        Connection connection = null;
+        try {
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = "DELETE * FROM Users WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userID);
+
+            int rowsDeleted = statement.executeUpdate();
+
+            // Check if any rows were deleted
+            if (rowsDeleted > 0) {
+                System.out.println("User deleted successfully: ID = " + userID);
+                return true;
+            } else {
+                System.out.println("No user found with ID: " + userID);
+                return false;
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+    }
 
     // Get all userID
     public List<Integer> getAllUserID() {
@@ -136,6 +184,7 @@ public class UsersDAO {
 
         return user;
     }
+
 
 
 }

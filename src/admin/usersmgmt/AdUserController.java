@@ -1,0 +1,106 @@
+package admin.usersmgmt;
+
+import app.App;
+import register.users.UsersDAO;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class AdUserController implements ActionListener {
+    private AdUserView view;
+    private UsersDAO usersDAO;
+
+    public AdUserController(AdUserView view, UsersDAO usersDAO){
+        this.view = view;
+        this.usersDAO = usersDAO;
+
+        view.getBtnAddUser().addActionListener(this);
+        view.getBtnUpdateUser().addActionListener(this);
+        view.getBtnDeleteUser().addActionListener(this);
+        view.getBtnBack().addActionListener(this);
+    }
+
+    public void actionPerformed (ActionEvent e) {
+        if (e.getSource() == view.getBtnAddUser()) {
+            System.out.println("user add Button triggered");
+            boolean add=true;
+            addNupdateUser(add);
+        } else if (e.getSource() == view.getBtnUpdateUser()) {
+            boolean add=false;
+            addNupdateUser(add);
+        } else if (e.getSource() == view.getBtnDeleteUser()) {
+            //deleteUser();
+        } else if (e.getSource() == view.getBtnBack()) {
+            view.dispose();
+            App.getInstance().getDashBoardView().setVisible(true);
+        }
+    }
+
+    public void addNupdateUser(boolean add) {
+        String name = JOptionPane.showInputDialog("Enter full name: ");
+        String username = JOptionPane.showInputDialog("Enter username: ");
+        String password = JOptionPane.showInputDialog("Enter password: ");
+        String address = JOptionPane.showInputDialog("Enter address: ");
+        String phone = JOptionPane.showInputDialog("Enter phone: ");
+        int roleID = 0;
+        String roleid = JOptionPane.showInputDialog("Enter roleID:\n 1. Admin \n 2.Customer");
+        try{
+            roleID = Integer.parseInt(roleid);
+        }catch (NumberFormatException e) {
+            e.printStackTrace();
+            return;
+        }
+        // Validate inputs
+        if(!isValidName(name)) {
+            JOptionPane.showMessageDialog(null, "Invalid name!");
+            return;
+        } else if(!isValidString(username)) {
+            JOptionPane.showMessageDialog(null, "Invalid username!");
+            return;
+        }else if(!isValidString(password)) {
+            JOptionPane.showMessageDialog(null, "Invalid password!");
+            return;
+        } else if(!isValidString(address)) {
+            JOptionPane.showMessageDialog(null, "Invalid address!");
+            return;
+        }
+
+        boolean success;
+        int userID = 0;
+        if (add) {
+            success = usersDAO.addUser(name, username,password,address,phone,roleID);
+            confirmProcess(success,"add");
+        } else {
+            String userid = JOptionPane.showInputDialog("Enter user id: ");
+            try {
+                userID = Integer.parseInt(userid);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return;
+            }
+            success = usersDAO.updateUser(userID, name, username,password,address,phone,roleID);
+        }
+    }
+    private boolean isValidName(String string) {
+        // Regex to check if the string contains only letters, digits, and spaces
+        return string != null && !string.trim().isEmpty() && string.matches("^[a-zA-Z0-9\\s]+$");
+    }
+    private boolean isValidString(String string) {
+        return string != null && !string.trim().isEmpty();
+    }
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        // Regex to check if phone number starts with optional +, followed by digits, spaces, dashes
+        return phoneNumber != null && phoneNumber.matches("^[+]?\\d{1,4}?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$");
+    }
+    public void confirmProcess(boolean success, String task){
+        // Confirm process
+        if (success) {
+            JOptionPane.showMessageDialog(null, "User " + task + "ed!");
+            return;
+        } else {
+            JOptionPane.showMessageDialog(null, "Failed to "+ task +" user!");
+            return;
+        }
+    }
+}

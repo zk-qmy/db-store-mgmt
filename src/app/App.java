@@ -4,6 +4,7 @@ import admin.dashboard.DashBoardView;
 import admin.ordersmgmt.AdOrdersView;
 import admin.productsmgmt.AdProductsController;
 import admin.productsmgmt.AdProductsView;
+import admin.usersmgmt.AdUserController;
 import admin.usersmgmt.AdUserView;
 import customer.browser.BrowserController;
 import customer.browser.BrowserView;
@@ -51,6 +52,7 @@ public class App {
     private final CartController cartController;
     private final BrowserController browserController;
     private final AdProductsController adProductsController;
+    private final AdUserController adUserController;
 
 
 
@@ -83,6 +85,7 @@ public class App {
         this.orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
         this.cartController = new CartController(cartView, orderDetailsDAO, productsDAO);
         this.adProductsController = new AdProductsController(adProductsView, productsDAO);
+        this.adUserController = new AdUserController(adUserView, usersDAO);
 
     }
 
