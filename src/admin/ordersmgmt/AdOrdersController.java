@@ -29,20 +29,17 @@ public class AdOrdersController implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.getBtnAddOrder()) {
-            addOrder();
+            App.getInstance().getCartView().setVisible(true);
         } else if (e.getSource() == view.getBtnUpdateOrder()) {
             //updateOrder();
         } else if(e.getSource() == view.getBtnDeleteOrder()) {
-            //deleteOrder();
+            deleteOrder();
         } else if (e.getSource() == view.getBtnBack()) {
             view.dispose();
             App.getInstance().getDashBoardView().setVisible(true);
         } else if (e.getSource()==view.getBtnRefresh()) {
             displayOrders();
         }
-    }
-    public void addOrder(){
-        App.getInstance().getCartView().setVisible(true);
     }
 
     public void displayOrders(){
@@ -59,6 +56,25 @@ public class AdOrdersController implements ActionListener {
                     order.getAddress(),
                     order.getPhone()
             });
+        }
+    }
+    public void deleteOrder(){
+        int orderID = 0;
+        String id = JOptionPane.showInputDialog(null, "Enter ID of the order you want to delete: ");
+        try{
+            orderID = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid orderID");
+            return;
+        }
+        // get all orderID logic
+        List<Integer> orderIDList = ordersDAO.getAllorderID();
+        if (orderIDList.contains(orderID)) {
+            ordersDAO.deleteOrder(orderID);
+            displayOrders();
+        } else {
+            JOptionPane.showMessageDialog(null, "Order ID does not exist!");
+            return;
         }
 
     }

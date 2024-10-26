@@ -14,7 +14,7 @@ public class OrdersDAO {
     //// Load all
     public List<Orders> loadAllOrders(){
         // DEBUG
-        System.out.println("got into orderDAO.loadAllOrders!!!");
+        //System.out.println("got into orderDAO.loadAllOrders!!!");
         List<Orders> orderList = new ArrayList<>();
         String query = """
             WITH OrderTotals AS (
@@ -101,7 +101,6 @@ public class OrdersDAO {
                 order.addLine(orderLine);
             }
         } catch (SQLException e) {
-            System.out.println("Error here!!1");
             e.printStackTrace();
             return null;
         } finally {
@@ -113,7 +112,55 @@ public class OrdersDAO {
     //TO DO: Update order status(for admin - associate with updateTransaction
 
     // TO DO: Delete order(for admin - associated with updateTransaction
+    public boolean deleteOrder(int orderID){
+        Connection connection = null;
+        try{
+            String query1 = "DELETE FROM Orders WHERE id = ?";
+            String query2 = "DELETE FROM OrderDetails WHERE orderID = ?";
+            connection = DatabaseConn.getInstance().getConnection();
+
+            // start transaction
+            connection.setAutoCommit(false);
+
+            PreparedStatement statement1 = connection.prepareStatement(query1);
+            statement1.setInt(1,orderID);
+            PreparedStatement statement2 = connection.prepareStatement((query2));
+            statement2.setInt(1,orderID);
+            statement2.executeUpdate();
+            statement1.executeUpdate();
+
+            connection.commit();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return true;
+    }
 
     // TO DO: Remove Order(line) for customer - have not figure out how to do it
+
+    // Get all orderID
+    public List<Integer> getAllorderID(){
+        Connection connection = null;
+        List<Integer> orderIDList = new ArrayList<>();
+        try{
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = "SELECT id FROM Orders";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            while(resultSet.next()) {
+                orderIDList.add(resultSet.getInt("id"));
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return orderIDList;
+    }
 }
 
