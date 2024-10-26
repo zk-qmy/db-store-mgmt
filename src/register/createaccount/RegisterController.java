@@ -76,7 +76,10 @@ public class RegisterController implements ActionListener {
         return string != null && !string.trim().isEmpty();
     }
     private boolean isValidPhoneNumber(String phoneNumber) {
-        // Regex to check if phone number starts with optional +, followed by digits, spaces, dashes
-        return phoneNumber != null && phoneNumber.matches("^[+]?\\d{1,4}?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$");
+        if (phoneNumber != null && phoneNumber.length()>=10 && phoneNumber.length()<=15) {
+            // Regex to check if phone number starts with optional +, followed by digits, spaces, dashes
+            return phoneNumber.matches("^[+]?\\d{1,4}?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$");
+        }
+        return false;
     }
 }

@@ -7,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AdUserView extends JFrame {
     private JButton btnAddUser = new JButton("Add User");
@@ -30,9 +32,17 @@ public class AdUserView extends JFrame {
         JPanel tablePan = new JPanel();
         tablePan.setLayout(new BoxLayout(tablePan, BoxLayout.Y_AXIS));
         // Add table to scroll
-        tableModel = new DefaultTableModel(new Object[]{"ID", "Name", "username", "password", "address", "phone", "role"},0);
+        tableModel = new DefaultTableModel(
+                new Object[]{"ID", "Name", "username", "password", "address", "phone", "role"},0){
+         @Override
+         public boolean isCellEditable(int row, int column) {
+             return false; // Make all cells uneditable
+         }
+        };
         table = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(table);
+        table.setRowHeight(30);
+
+         JScrollPane scrollPane = new JScrollPane(table);
         tablePan.add(scrollPane);
 
         JScrollPane scrollPan = new JScrollPane(table);
@@ -86,7 +96,6 @@ public class AdUserView extends JFrame {
     public DefaultTableModel getTableModel() {
         return tableModel;
     }
-    public void loadUser() {
-    List<Users> userList =usersDAO.loadAllUsers();
+
 }
 

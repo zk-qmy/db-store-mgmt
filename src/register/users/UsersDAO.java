@@ -1,6 +1,8 @@
 package register.users;
 
 import app.DatabaseConn;
+
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,7 @@ public class UsersDAO {
     public boolean updateUser(int userID, String name, String username, String password, String address, String phone, int roleID) {
         Connection connection = null;
         try {
-            String query = "UPDATE Users SET VALUES (?,?,?,?,?,?) WHERE id= ?";
+            String query = "UPDATE Users SET username=?, password=?, name=?, address=?, phone=?, roleID=? WHERE id= ?";
             connection = DatabaseConn.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
@@ -83,7 +85,7 @@ public class UsersDAO {
         Connection connection = null;
         try {
             connection = DatabaseConn.getInstance().getConnection();
-            String query = "DELETE * FROM Users WHERE id = ?";
+            String query = "DELETE FROM Users WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userID);
 
@@ -187,9 +189,10 @@ public class UsersDAO {
 
     public List<Users> loadAllUsers() {
         Connection connection =null;
-        List<Users> userList = null;
+        List<Users> userList = new ArrayList<>();
         try {
             String query = "SELECT * FROM Users JOIN Roles ON Users.roleID = Roles.id";
+            connection = DatabaseConn.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
 

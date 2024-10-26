@@ -1,11 +1,13 @@
 package admin.usersmgmt;
 
 import app.App;
+import register.users.Users;
 import register.users.UsersDAO;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class AdUserController implements ActionListener {
     private AdUserView view;
@@ -14,6 +16,7 @@ public class AdUserController implements ActionListener {
     public AdUserController(AdUserView view, UsersDAO usersDAO){
         this.view = view;
         this.usersDAO = usersDAO;
+        displayUsers();
 
         view.getBtnAddUser().addActionListener(this);
         view.getBtnUpdateUser().addActionListener(this);
@@ -30,7 +33,7 @@ public class AdUserController implements ActionListener {
             boolean add=false;
             addNupdateUser(add);
         } else if (e.getSource() == view.getBtnDeleteUser()) {
-            //deleteUser();
+            deleteUser();
         } else if (e.getSource() == view.getBtnBack()) {
             view.dispose();
             App.getInstance().getDashBoardView().setVisible(true);
@@ -39,30 +42,36 @@ public class AdUserController implements ActionListener {
 
     public void addNupdateUser(boolean add) {
         String name = JOptionPane.showInputDialog("Enter full name: ");
+        if(!isValidName(name)) {
+            JOptionPane.showMessageDialog(null, "Invalid name!");
+            return;
+        }
         String username = JOptionPane.showInputDialog("Enter username: ");
+        if(!isValidString(username)) {
+            JOptionPane.showMessageDialog(null, "Invalid username!");
+            return;
+        }
         String password = JOptionPane.showInputDialog("Enter password: ");
+        if(!isValidString(password)) {
+            JOptionPane.showMessageDialog(null, "Invalid password!");
+            return;
+        }
         String address = JOptionPane.showInputDialog("Enter address: ");
+        if(!isValidString(address)) {
+            JOptionPane.showMessageDialog(null, "Invalid address!");
+            return;
+        }
         String phone = JOptionPane.showInputDialog("Enter phone: ");
+        if (!isValidPhoneNumber(phone)) {
+            JOptionPane.showMessageDialog(null, "Invalid phone number");
+            return;
+        }
         int roleID = 0;
-        String roleid = JOptionPane.showInputDialog("Enter roleID:\n 1. Admin \n 2.Customer");
+        String roleid = JOptionPane.showInputDialog("Enter roleID:\n 1. Admin \n 2. Customer");
         try{
             roleID = Integer.parseInt(roleid);
         }catch (NumberFormatException e) {
             e.printStackTrace();
-            return;
-        }
-        // Validate inputs
-        if(!isValidName(name)) {
-            JOptionPane.showMessageDialog(null, "Invalid name!");
-            return;
-        } else if(!isValidString(username)) {
-            JOptionPane.showMessageDialog(null, "Invalid username!");
-            return;
-        }else if(!isValidString(password)) {
-            JOptionPane.showMessageDialog(null, "Invalid password!");
-            return;
-        } else if(!isValidString(address)) {
-            JOptionPane.showMessageDialog(null, "Invalid address!");
             return;
         }
 
@@ -70,6 +79,7 @@ public class AdUserController implements ActionListener {
         int userID = 0;
         if (add) {
             success = usersDAO.addUser(name, username,password,address,phone,roleID);
+            displayUsers();
             confirmProcess(success,"add");
         } else {
             String userid = JOptionPane.showInputDialog("Enter user id: ");
@@ -80,6 +90,9 @@ public class AdUserController implements ActionListener {
                 return;
             }
             success = usersDAO.updateUser(userID, name, username,password,address,phone,roleID);
+            displayUsers();
+            confirmProcess(success, "update");
+
         }
     }
     private boolean isValidName(String string) {
@@ -90,17 +103,58 @@ public class AdUserController implements ActionListener {
         return string != null && !string.trim().isEmpty();
     }
     private boolean isValidPhoneNumber(String phoneNumber) {
-        // Regex to check if phone number starts with optional +, followed by digits, spaces, dashes
-        return phoneNumber != null && phoneNumber.matches("^[+]?\\d{1,4}?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$");
+        if (phoneNumber != null && phoneNumber.length()>=10 && phoneNumber.length()<=15) {
+            // Regex to check if phone number starts with optional +, followed by digits, spaces, dashes
+            return phoneNumber.matches("^[+]?\\d{1,4}?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$");
+        }
+        return false;
     }
     public void confirmProcess(boolean success, String task){
         // Confirm process
         if (success) {
-            JOptionPane.showMessageDialog(null, "User " + task + "ed!");
+            JOptionPane.showMessageDialog(null, "User " + task + "d!");
             return;
         } else {
             JOptionPane.showMessageDialog(null, "Failed to "+ task +" user!");
             return;
         }
+    }
+
+    public void displayUsers() {
+        List<Users> userList = usersDAO.loadAllUsers();
+
+        view.getTableModel().setRowCount(0);
+
+        for (Users user : userList) {
+            view.getTableModel().addRow(new Object[] {
+                    user.getUserID(),
+                    user.getName(),
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getAddress(),
+                    user.getPhoneNum(),
+                    user.getRoleName()
+            });
+        }
+    }
+
+    public void deleteUser() {
+        // if userID = 1 (ultimate admin -> not allow)
+        String userid = JOptionPane.showInputDialog("Enter user id that you want to delete: ");
+        int userID = 0;
+        try {
+            userID = Integer.parseInt(userid);
+        } catch(NumberFormatException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Invalid user id");
+            return;
+        }
+        if (userID == 1){
+            JOptionPane.showMessageDialog(null, "Cannot delete Ultimate Admin account!");
+            return;
+        }
+        boolean success = usersDAO.deleteUser(userID);
+        displayUsers();
+        confirmProcess(success, "delete");
     }
 }
