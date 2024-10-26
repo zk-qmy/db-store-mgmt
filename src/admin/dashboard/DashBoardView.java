@@ -1,6 +1,7 @@
 package admin.dashboard;
 
 import app.App;
+import register.Session;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,6 +73,8 @@ public class DashBoardView extends JFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             dispose();  // Close dashboard
+            Session.getInstance().clearSession();
+            System.out.println("Session cleared!");
             App.getInstance().getHomeScreen().setVisible(true);  // Replace with login screen
         }
     }

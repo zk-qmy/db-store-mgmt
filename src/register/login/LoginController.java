@@ -39,10 +39,10 @@ public class LoginController implements ActionListener {
 
                 Users currentUser = usersDAO.getUserByUsername(username);
                 Session.getInstance().setCurrentUser(currentUser); // Store session
+                System.out.println("Session of user: " + currentUser.getUserID());
                 view.dispose();
                 homeScreen.dispose();
                 if (user.getRoleID() == 1){ // admin
-                    //App.getInstance().getAdProductsView().setVisible(true);
                     App.getInstance().getDashBoardView().setVisible(true);
                 } else if (user.getRoleID() == 2) { // customer
                     App.getInstance().getBrowserView().setVisible(true);

@@ -70,6 +70,7 @@ public class CartController implements ActionListener {
             return;
         }*/
         int customerID = Session.getInstance().getCurrentUser().getUserID();
+        System.out.println("User with id: "+ customerID+" placed order!!!!!!!!!!");
 
         // Save the cart and its details into the database
         orderDetailsDAO.addToOrderDB(cart, defaultStatus, customerID);

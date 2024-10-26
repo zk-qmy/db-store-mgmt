@@ -2,6 +2,8 @@ package register.createaccount;
 
 import app.App;
 import app.HomeScreen;
+import register.Session;
+import register.users.Users;
 import register.users.UsersDAO;
 
 import javax.swing.*;
@@ -53,13 +55,19 @@ public class RegisterController implements ActionListener {
 
             if (!password.equals(confirmPassword)) {
                 JOptionPane.showMessageDialog(null, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             } else {
                 int roleID = 2; // default customer id is 2
                 // Implement registration logic here
-                if (usersDAO.addUser(name, username, password, address, phone, roleID)) {
+                boolean isCreated = usersDAO.addUser(name, username, password, address, phone, roleID);
+                if (isCreated) {
                     JOptionPane.showMessageDialog(null, "Account created successfully!");
+                    Users currentUser = usersDAO.getUserByUsername(username);
+                    Session.getInstance().setCurrentUser(currentUser);
+                    System.out.println("Session created for user: " + currentUser.getUserID());
                     homeScreen.dispose();
                     view.dispose();
+
                     App.getInstance().getBrowserView().setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Failed to create account!");

@@ -140,7 +140,7 @@ public class UsersDAO {
             statement.setString(1, username);
 
             // Debug: print the SQL query
-            System.out.println("Executing query1: " + statement.toString());
+            //System.out.println("Executing query1: " + statement.toString());
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -164,7 +164,7 @@ public class UsersDAO {
                 roleStatement.setInt(1, user.getRoleID());  // Set the parameter here
 
                 // Debug: print the SQL query
-                System.out.println("Executing query2: " + roleStatement.toString());
+                //System.out.println("Executing query2: " + roleStatement.toString());
 
                 ResultSet roleResultSet = roleStatement.executeQuery();
 

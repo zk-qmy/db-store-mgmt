@@ -22,6 +22,7 @@ public class AdUserController implements ActionListener {
         view.getBtnUpdateUser().addActionListener(this);
         view.getBtnDeleteUser().addActionListener(this);
         view.getBtnBack().addActionListener(this);
+        view.getBtnRefresh().addActionListener(this);
     }
 
     public void actionPerformed (ActionEvent e) {
@@ -37,6 +38,8 @@ public class AdUserController implements ActionListener {
         } else if (e.getSource() == view.getBtnBack()) {
             view.dispose();
             App.getInstance().getDashBoardView().setVisible(true);
+        } else if(e.getSource() == view.getBtnRefresh()) {
+            displayUsers();
         }
     }
 

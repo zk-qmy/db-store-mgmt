@@ -10,18 +10,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrdersDAO {
-    /*private Connection connection;
-
-    public OrdersDAO() {
-        System.out.println("OrderDAO created!!!");
-    }*/
     // Load Orders
     //// Load all
     public List<Orders> loadAllOrders(){
         // DEBUG
         System.out.println("got into orderDAO.loadAllOrders!!!");
         List<Orders> orderList = new ArrayList<>();
-        String query = "SELECT * FROM Orders";
+        String query = """
+            WITH OrderTotals AS (
+                SELECT
+                    Orders.id AS orderID,
+                    Orders.customerID,
+                    Orders.status,
+                    SUM(OrderDetails.orderQuantity * Products.price) AS orderTotal
+                FROM Orders
+                JOIN OrderDetails ON Orders.id = OrderDetails.orderID
+                JOIN Products ON OrderDetails.productID = Products.id
+                GROUP BY Orders.id, Orders.customerID
+            )
+            SELECT
+                ot.orderID,
+                ot.customerID,
+                ot.orderTotal,
+                ot.status,
+                u.name AS name,
+                u.address AS address,
+                u.phone AS phone
+            FROM OrderTotals ot
+            JOIN Users u ON ot.customerID = u.id
+            ORDER BY ot.orderID ASC;
+        """;
+
+
         Connection conn = null;
         try {
             conn = DatabaseConn.getInstance().getConnection();
@@ -29,9 +49,15 @@ public class OrdersDAO {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Orders order = new Orders();
-                order.setOrderId(rs.getInt("id"));
+                order.setOrderId(rs.getInt("orderID"));
                 order.setCusID(rs.getInt("customerID"));
+                order.setCtmName(rs.getString("name"));
+                order.setTotal(rs.getDouble("OrderTotal"));
                 order.setStatus(rs.getString("status"));
+                order.setAddress(rs.getString("address"));
+                order.setPhone(rs.getString("phone"));
+
+
                 orderList.add(order);
             }
         } catch (SQLException e) {
@@ -42,8 +68,8 @@ public class OrdersDAO {
         }
         return orderList;
     }
-    // Save an Order
-    // TO DO: double check
+    // Save an Order (already in product DAO)
+    // TO DO: check implement order history for a user
 
 
     // Find an order by ID
@@ -84,7 +110,7 @@ public class OrdersDAO {
         return order;
     }
 
-    //TO DO: Update order (for admin - associate with updateTransaction
+    //TO DO: Update order status(for admin - associate with updateTransaction
 
     // TO DO: Delete order(for admin - associated with updateTransaction
 

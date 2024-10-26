@@ -8,6 +8,9 @@ import products.Products;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import customer.orderhistory.OrderHisView;
+import register.Session;
+import register.users.Users;
+
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,7 +24,7 @@ public class BrowserController implements ActionListener {
     public BrowserController(BrowserView view, ProductsDAO productDAO, OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO) {
         this.productDAO = productDAO;
         this.view = view;
-        System.out.println("browser controller created!");
+        //System.out.println("browser controller created!");
         this.ordersDAO = ordersDAO;
         this.orderDetailsDAO = orderDetailsDAO;
         loadProductList();
@@ -37,7 +40,7 @@ public class BrowserController implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.getBtnFind()) {
-            System.out.println("find product button triggered!");
+            //System.out.println("find product button triggered!");
             findProduct();
         }else if (e.getSource() == view.getBtnBrowse()){
             loadProductList();
@@ -51,6 +54,9 @@ public class BrowserController implements ActionListener {
             int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 view.dispose();
+                Users currentUser = Session.getInstance().getCurrentUser();
+                Session.getInstance().clearSession();
+                System.out.println("clear Session for user: " + currentUser.getUserID());
                 App.getInstance().getHomeScreen().setVisible(true);
             }
 
