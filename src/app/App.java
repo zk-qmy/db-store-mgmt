@@ -81,7 +81,6 @@ public class App {
         this.registerController = new RegisterController(registerView, usersDAO, homeScreen);
         this.loginController = new LoginController(loginView, usersDAO, homeScreen);
         this.browserController = new BrowserController(browserView, productsDAO, ordersDAO, orderDetailsDAO);
-        //System.out.println("ordersDAO: " + ordersDAO);
         this.orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
         this.cartController = new CartController(cartView, orderDetailsDAO, productsDAO);
         this.adProductsController = new AdProductsController(adProductsView, productsDAO);

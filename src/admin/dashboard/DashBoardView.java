@@ -1,7 +1,5 @@
 package admin.dashboard;
 
-import admin.productsmgmt.AdProductsView;
-import admin.usersmgmt.AdUserView;
 import app.App;
 
 import javax.swing.*;

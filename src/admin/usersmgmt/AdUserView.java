@@ -1,14 +1,9 @@
 package admin.usersmgmt;
 
-import register.users.Users;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class AdUserView extends JFrame {
     private JButton btnAddUser = new JButton("Add User");
