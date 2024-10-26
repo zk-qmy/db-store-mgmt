@@ -1,39 +1,26 @@
 package register;
 import register.users.Users;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.Map;
 
 public class Session {
     private static Session instance;
-    // Thread-safe map to hold user sessions
-    private Map<String, Users> userSessions;
+    private Users currentUser;
+
     private Session() {
-        userSessions = new ConcurrentHashMap<>();
     }
 
-    public static Session getInstance() {
+    public static synchronized Session getInstance() {
         if (instance==null) {
-            synchronized (Session.class) {
-                if(instance == null) {
-                    instance = new Session();
-                }
-            }
+            instance = new Session();
         }
         return instance;
     }
 
-    // Add a user session
-    public void setUserSession(String username, Users user) {
-        userSessions.put(username, user);
-    }
+    public void setCurrentUser(Users currentUser) {this.currentUser = currentUser;}
 
-    // Retrieve a user session by username
-    public Users getUserSession(String username) {
-        return userSessions.get(username);
+    public Users getCurrentUser() {
+        return currentUser;
     }
-
-    // Remove a user session (e.g., when logging out)
-    public void invalidateSession(String username) {
-        userSessions.remove(username);
+    public void clearSession() {
+        currentUser = null;
     }
 }

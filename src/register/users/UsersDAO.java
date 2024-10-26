@@ -80,5 +80,63 @@ public class UsersDAO {
         return userIDList;
     }
 
+    // Get user by username
+    public Users getUserByUsername(String username) {
+        Connection connection = null;
+        Users user = null;
+
+        try {
+            connection = DatabaseConn.getInstance().getConnection();
+            String query1 = "SELECT * FROM Users WHERE username = ?";
+            PreparedStatement statement = connection.prepareStatement(query1);
+            statement.setString(1, username);
+
+            // Debug: print the SQL query
+            System.out.println("Executing query1: " + statement.toString());
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                user = new Users();
+                user.setUserID(resultSet.getInt("id"));
+                user.setName(resultSet.getString("name"));
+                user.setUsername(resultSet.getString("username"));
+                user.setAddress(resultSet.getString("address"));
+                user.setPhoneNum(resultSet.getString("phone"));
+                user.setPassword(resultSet.getString("password"));
+                user.setRoleID(resultSet.getInt("roleID"));
+            }
+
+            resultSet.close();
+            statement.close();
+
+            if (user != null) {
+                String query2 = "SELECT roleName FROM Roles WHERE id = ?";
+                PreparedStatement roleStatement = connection.prepareStatement(query2);
+                roleStatement.setInt(1, user.getRoleID());  // Set the parameter here
+
+                // Debug: print the SQL query
+                System.out.println("Executing query2: " + roleStatement.toString());
+
+                ResultSet roleResultSet = roleStatement.executeQuery();
+
+                if (roleResultSet.next()) {
+                    user.setRoleName(roleResultSet.getString("roleName"));
+                }
+                roleResultSet.close();
+                roleStatement.close();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+
+        return user;
+    }
+
+
 }
 

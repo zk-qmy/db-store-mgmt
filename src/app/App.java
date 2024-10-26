@@ -122,8 +122,8 @@ public class App {
 
     // Main class
     public static void main(String[] args) {
-        //App.getInstance().getBrowserView().setVisible(true);
-        //App.getInstance().getRegisterView().setVisible(true);
-        App.getInstance().getHomeScreen().setVisible(true);
+        //App.getInstance().getHomeScreen().setVisible(true);
+        // developing view
+        App.getInstance().getAdUserView().setVisible(true);
     }
 }

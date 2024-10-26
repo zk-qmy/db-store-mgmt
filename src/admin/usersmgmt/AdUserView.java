@@ -1,58 +1,68 @@
 package admin.usersmgmt;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class AdUserView extends JFrame {
-    private JTextField txtUsername = new JTextField(20);
-    private JTextField txtPassword = new JPasswordField(20);
-    private JTextField txtRole = new JTextField(10);
     private JButton btnAddUser = new JButton("Add User");
     private JButton btnUpdateUser = new JButton("Update User");
     private JButton btnDeleteUser = new JButton("Delete User");
-    private JButton btnViewUsers = new JButton("View Users");
-    private JTable userTable = new JTable(new DefaultTableModel(new Object[]{"ID", "Username", "Role"}, 0));
-    private DefaultTableModel tableModel = (DefaultTableModel) userTable.getModel();
+    private JButton btnBack = new JButton("Back");
+    private DefaultTableModel tableModel;
+    private JTable table;
 
-    public AdUserView() {
-        setTitle("User Management");
-        setSize(600, 400);
-        setLayout(new BorderLayout());
+     public AdUserView() {
+        this.setTitle("User Management");
+        this.setSize(1020, 800);
+        this.setLayout(new BorderLayout());
+        setLocationRelativeTo(null);
 
-        JPanel panelForm = new JPanel();
-        panelForm.setLayout(new GridLayout(3, 2));
-        panelForm.add(new JLabel("Username:"));
-        panelForm.add(txtUsername);
-        panelForm.add(new JLabel("Password:"));
-        panelForm.add(txtPassword);
-        panelForm.add(new JLabel("Role:"));
-        panelForm.add(txtRole);
+        JLabel labelTit = new JLabel("User Management");
+        labelTit.setBorder(new EmptyBorder(20, 10, 40, 20));
+        labelTit.setFont(new Font("Arial", Font.BOLD, 50));
 
-        JPanel panelButtons = new JPanel();
-        panelButtons.add(btnAddUser);
-        panelButtons.add(btnUpdateUser);
-        panelButtons.add(btnDeleteUser);
-        panelButtons.add(btnViewUsers);
+        //table panel
+        JPanel tablePan = new JPanel();
+        tablePan.setLayout(new BoxLayout(tablePan, BoxLayout.Y_AXIS));
+        // Add table to scroll
+        tableModel = new DefaultTableModel(new Object[]{"ID", "Name", "username", "password", "address", "phone", "role ID"},0);
+        table = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(table);
+        tablePan.add(scrollPane);
 
-        add(panelForm, BorderLayout.NORTH);
-        add(panelButtons, BorderLayout.CENTER);
-        add(new JScrollPane(userTable), BorderLayout.SOUTH);
+        JScrollPane scrollPan = new JScrollPane(table);
+        scrollPan.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+       //scrollPan.setPreferredSize(new Dimension(600, 400));
+         tablePan.add(scrollPan, BorderLayout.CENTER);
+         scrollPan.setViewportView(table);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+        this.add(tablePan, BorderLayout.CENTER);
+        // control panel
 
-    public String getUsername() {
-        return txtUsername.getText();
-    }
+        JPanel controlPan = new JPanel();
+        controlPan.setLayout(new BoxLayout(controlPan, BoxLayout.Y_AXIS));
+        controlPan.setBorder(new EmptyBorder(40, 20, 40, 20));
 
-    public String getPassword() {
-        return txtPassword.getText();
-    }
+        // Center the buttons and add them to the control panel
+        btnAddUser.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnUpdateUser.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnDeleteUser.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnBack.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-    public String getRole() {
-        return txtRole.getText();
+        // Add components to control panel
+        controlPan.add(Box.createVerticalStrut(10)); // Spacer
+        controlPan.add(btnAddUser);
+        controlPan.add(Box.createVerticalStrut(10)); // Spacer
+        controlPan.add(btnUpdateUser);
+        controlPan.add(Box.createVerticalStrut(10)); // Spacer
+        controlPan.add(btnDeleteUser);
+        controlPan.add(Box.createVerticalStrut(10)); // Spacer
+        controlPan.add(btnBack);
+        this.add(controlPan, BorderLayout.EAST);
+        this.getContentPane().add(labelTit, BorderLayout.NORTH);
     }
 
     public JButton getBtnAddUser() {
@@ -67,8 +77,8 @@ public class AdUserView extends JFrame {
         return btnDeleteUser;
     }
 
-    public JButton getBtnViewUsers() {
-        return btnViewUsers;
+    public JButton getBtnBack(){
+        return btnBack;
     }
 
     public DefaultTableModel getTableModel() {

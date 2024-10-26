@@ -8,6 +8,10 @@ public class Users {
     private String address;
     private String phoneNum;
     private int roleID;
+    private String roleName;
+
+    public void setRoleName(String roleName) {this.roleName = roleName;}
+    public String getRoleName() {return roleName;}
 
     public void setRoleID(int roleID) {
         this.roleID = roleID;
