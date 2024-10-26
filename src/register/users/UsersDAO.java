@@ -185,6 +185,34 @@ public class UsersDAO {
         return user;
     }
 
+    public List<Users> loadAllUsers() {
+        Connection connection =null;
+        List<Users> userList = null;
+        try {
+            String query = "SELECT * FROM Users JOIN Roles ON Users.roleID = Roles.id";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            while(resultSet.next()) {
+                Users user = new Users();
+                user.setUserID(resultSet.getInt("id"));
+                user.setName(resultSet.getString("name"));
+                user.setUsername(resultSet.getString("username"));
+                user.setPassword(resultSet.getString("password"));
+                user.setAddress(resultSet.getString("address"));
+                user.setPhoneNum(resultSet.getString("phone"));
+                user.setRoleName(resultSet.getString("roleName"));
+                userList.add(user);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return null;
+        }finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return userList;
+    }
+
 
 
 }

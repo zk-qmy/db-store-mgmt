@@ -1,5 +1,7 @@
 package admin.usersmgmt;
 
+import register.users.Users;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -28,7 +30,7 @@ public class AdUserView extends JFrame {
         JPanel tablePan = new JPanel();
         tablePan.setLayout(new BoxLayout(tablePan, BoxLayout.Y_AXIS));
         // Add table to scroll
-        tableModel = new DefaultTableModel(new Object[]{"ID", "Name", "username", "password", "address", "phone", "role ID"},0);
+        tableModel = new DefaultTableModel(new Object[]{"ID", "Name", "username", "password", "address", "phone", "role"},0);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         tablePan.add(scrollPane);
@@ -84,5 +86,7 @@ public class AdUserView extends JFrame {
     public DefaultTableModel getTableModel() {
         return tableModel;
     }
+    public void loadUser() {
+    List<Users> userList =usersDAO.loadAllUsers();
 }
 
