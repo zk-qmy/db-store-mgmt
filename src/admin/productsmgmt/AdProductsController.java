@@ -13,7 +13,6 @@ public class AdProductsController implements ActionListener{
     private final AdProductsView view;
 
     public AdProductsController(AdProductsView view, ProductsDAO productsDAO) {
-        System.out.println("adproductcontroller created!!!!!");
         this.productsDAO = productsDAO;
         this.view = view;
 

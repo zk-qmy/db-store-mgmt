@@ -26,7 +26,6 @@ public class CartController implements ActionListener {
         view.getBtnOrder().addActionListener(this);
 
         cart = new Cart();
-        System.out.println("CartController created");
     }
 
 

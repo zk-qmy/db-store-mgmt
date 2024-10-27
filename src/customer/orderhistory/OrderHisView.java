@@ -67,21 +67,17 @@ public class OrderHisView extends JFrame{
         } else {
             for (Orders order : ordersList) {
                 JPanel box = new JPanel();
-                box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
+                box.setLayout(new GridLayout(1,3));
                 box.setBorder(boxBorder);
-                box.setPreferredSize(new Dimension(750, 50));
 
                 JLabel orderID = new JLabel("Order ID: "+ order.getOrderID());
                 JLabel status = new JLabel("Status: "+ order.getStatus());
                 JLabel total = new JLabel("Total: "+order.getTotal());
 
-                orderID.setFont(new Font("Arial", Font.BOLD, 15));
+                orderID.setFont(new Font("Arial", Font.BOLD, 18));
                 total.setFont(new Font("Arial", Font.PLAIN, 18));
-                status.setFont(new Font("Arial", Font.BOLD, 20));
-
-                orderID.setAlignmentX(Component.CENTER_ALIGNMENT);
-                total.setAlignmentX(Component.CENTER_ALIGNMENT);
-                status.setAlignmentX(Component.CENTER_ALIGNMENT);
+                status.setFont(new Font("Arial", Font.BOLD, 18));
+                setStatusColor(status);
 
                 box.add(orderID);
                 box.add(total);
@@ -96,5 +92,25 @@ public class OrderHisView extends JFrame{
 
     public JButton getBtnFind() {
         return btnFind;
+    }
+
+    private void setStatusColor(JLabel status){
+        String extractedStatus = status.getText().replace("Status: ","").trim().toLowerCase();
+        switch(extractedStatus) {
+            case "pending":
+                status.setForeground(new Color(0xB8860B));
+                break;
+            case "approved":
+                status.setForeground(new Color(0x228B22));
+                break;
+            case "shipped":
+                status.setForeground(new Color(0x104E8B));
+                break;
+            case "canceled":
+                status.setForeground(new Color(0x8B0000));
+                break;
+            default:
+                break;
+        }
     }
 }

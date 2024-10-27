@@ -8,7 +8,7 @@ import java.awt.*;
 public class AdOrdersView extends JFrame {
     private JButton btnRefresh = new JButton("Refresh page");
     private JButton btnAdOrder = new JButton("Add Order");
-    private JButton btnUpdateOrder = new JButton("Update Order");
+    private JButton btnUpdateOrder = new JButton("Update Order Status");
     private JButton btnDeleteOrder = new JButton("Delete Order");
     private JButton btnBack = new JButton("Back");
     private DefaultTableModel tableModel;

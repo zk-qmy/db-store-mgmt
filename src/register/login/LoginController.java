@@ -35,8 +35,6 @@ public class LoginController implements ActionListener {
                 JOptionPane.showMessageDialog(null, "This user does not exist!");
             }
             else {
-                System.out.println(" GO to browse view!!!!!!");
-
                 Users currentUser = usersDAO.getUserByUsername(username);
                 Session.getInstance().setCurrentUser(currentUser); // Store session
                 System.out.println("Session of user: " + currentUser.getUserID());
@@ -46,6 +44,7 @@ public class LoginController implements ActionListener {
                     App.getInstance().getDashBoardView().setVisible(true);
                 } else if (user.getRoleID() == 2) { // customer
                     App.getInstance().getBrowserView().setVisible(true);
+                    App.getInstance().getOrderHisController();
                 }
 
             }

@@ -67,7 +67,7 @@ public class RegisterController implements ActionListener {
                     System.out.println("Session created for user: " + currentUser.getUserID());
                     homeScreen.dispose();
                     view.dispose();
-
+                    App.getInstance().getOrderHisController();
                     App.getInstance().getBrowserView().setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Failed to create account!");

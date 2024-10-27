@@ -17,6 +17,7 @@ import customer.orderhistory.OrderHisView;
 import orders.OrdersDAO;
 import orders.OrderDetailsDAO;
 import products.ProductsDAO;
+import register.Session;
 import register.createaccount.RegisterController;
 import register.createaccount.RegisterView;
 import register.users.UsersDAO;
@@ -25,6 +26,7 @@ import register.login.LoginView;
 
 public class App {
     private static App instance;
+    //private final Session session;
 
     // Main components
     private final UsersDAO usersDAO;
@@ -48,7 +50,7 @@ public class App {
     private final HomeScreenController homeScreenController;
     private final RegisterController registerController;
     private final LoginController loginController;
-    private final OrderHisController orderHisController;
+    //private final OrderHisController orderHisController;
     private final CartController cartController;
     private final BrowserController browserController;
     private final AdProductsController adProductsController;
@@ -81,7 +83,7 @@ public class App {
         this.registerController = new RegisterController(registerView, usersDAO, homeScreen);
         this.loginController = new LoginController(loginView, usersDAO, homeScreen);
         this.browserController = new BrowserController(browserView, productsDAO, ordersDAO, orderDetailsDAO);
-        this.orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
+        //this.orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
         this.cartController = new CartController(cartView, orderDetailsDAO, productsDAO);
         this.adProductsController = new AdProductsController(adProductsView, productsDAO);
         this.adUserController = new AdUserController(adUserView, usersDAO);
@@ -97,24 +99,21 @@ public class App {
         return instance;
     }
 
-    public OrderHisView getOrderHisView() {
-        return orderHisView;
+    public OrderHisController getOrderHisController(){
+        if (Session.getInstance().getCurrentUser() != null) {
+            return new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
+        } else {
+            throw new IllegalStateException("No user login yet!");
+        }
     }
 
-    public AdProductsView getAdProductsView() {
-        return adProductsView;
-    }
-
-    public CartView getCartView() {
-        return cartView;
-    }
-
+    public OrderHisView getOrderHisView() {return orderHisView;}
+    public AdProductsView getAdProductsView() {return adProductsView;}
+    public CartView getCartView() {return cartView;}
     public BrowserView getBrowserView() {
         return browserView;
     }
-    public RegisterView getRegisterView() {
-        return registerView;
-    }
+    public RegisterView getRegisterView() {return registerView;}
     public LoginView getLoginView() {return loginView;}
     public HomeScreen getHomeScreen() {
         return homeScreen;
@@ -125,8 +124,8 @@ public class App {
 
     // Main class
     public static void main(String[] args) {
-        //App.getInstance().getHomeScreen().setVisible(true);
+        App.getInstance().getHomeScreen().setVisible(true);
         // developing view
-        App.getInstance().getAdOrdersView().setVisible(true);
+        //App.getInstance().getOrderHisView().setVisible(true);
     }
 }

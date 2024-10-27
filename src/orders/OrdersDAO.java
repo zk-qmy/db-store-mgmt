@@ -162,5 +162,53 @@ public class OrdersDAO {
         }
         return orderIDList;
     }
+
+    // Load all order of a user
+    public List<Orders> loadUserOrders (int userID){
+        Connection connection = null;
+        List<Orders> ordersList= new ArrayList<>();
+        try{
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = """
+                WITH OrderTotals AS (
+                    SELECT
+                        Orders.id AS orderID,
+                        Orders.customerID,
+                        Orders.status,
+                        SUM(OrderDetails.orderQuantity * Products.price) AS orderTotal
+                    FROM Orders
+                    JOIN OrderDetails ON Orders.id = OrderDetails.orderID
+                    JOIN Products ON OrderDetails.productID = Products.id
+                    GROUP BY Orders.id, Orders.customerID
+                )
+                SELECT
+                    ot.orderID,
+                    ot.orderTotal,
+                    ot.status
+                FROM OrderTotals ot
+                WHERE ot.customerID = ?
+                ORDER BY ot.orderID ASC;
+            """;
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Orders order = new Orders();
+                order.setOrderId(resultSet.getInt("orderID"));
+                order.setTotal(resultSet.getDouble("orderTotal"));
+                order.setStatus(resultSet.getString("status"));
+                ordersList.add(order);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return ordersList;
+    }
 }
 
