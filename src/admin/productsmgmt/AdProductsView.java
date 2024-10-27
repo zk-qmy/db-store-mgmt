@@ -5,13 +5,10 @@ import orders.OrdersDAO;
 import products.Products;
 import products.ProductsDAO;
 import java.util.List;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AdProductsView  extends JFrame {
     private JComboBox<String> categoryComboBox;
@@ -24,7 +21,7 @@ public class AdProductsView  extends JFrame {
     private JPanel productPan;
     private JButton btnBack = new JButton("Back");
 
-    public AdProductsView (ProductsDAO productsDAO, OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO) {
+    public AdProductsView () {
         this.setTitle("Our Products");
         this.setLayout(new BorderLayout());
         this.setSize(1020, 800);

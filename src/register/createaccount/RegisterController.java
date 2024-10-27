@@ -20,7 +20,6 @@ public class RegisterController implements ActionListener {
         this.usersDAO = userDAO;
         this.homeScreen = homeScreen;
         view.getBtnRegister().addActionListener(this);
-        //view.getBtnLogin().addActionListener(this);
     }
     @Override
     public void actionPerformed(ActionEvent e) {

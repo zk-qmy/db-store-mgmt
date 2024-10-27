@@ -8,9 +8,9 @@ public class CartView extends JFrame {
     private JButton btnAdd = new JButton("Add a new item");
     private JButton btnOrder = new JButton("Place Order");
 
-    private DefaultTableModel items = new DefaultTableModel(); // store information for the table!
+    private DefaultTableModel items = new DefaultTableModel();
 
-    private JTable tblItems = new JTable(items); // null, new String[]{"ProductID", "Product Name", "Price", "Quantity", "Cost"});
+    private JTable tblItems = new JTable(items);
     private JLabel labTotal = new JLabel("Total: ");
 
     public CartView() {
@@ -57,8 +57,7 @@ public class CartView extends JFrame {
     }
 
     public void addRow(Object[] row) {
-        items.addRow(row);              // add a row to list of item!
-        //    items.fireTableDataChanged();
+        items.addRow(row);
     }
     public void clearCartTable(){
         DefaultTableModel model = (DefaultTableModel) tblItems.getModel();

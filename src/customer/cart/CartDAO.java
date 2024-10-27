@@ -1,5 +1,5 @@
 package customer.cart;
-
+/*
 import app.DatabaseConn;
 import customer.cart.CartLines;
 
@@ -45,7 +45,7 @@ public class CartDAO {
             DatabaseConn.getInstance().closeConn(connection);
         }
     }
-}
+}*/
     /*
     // addToCart
     public boolean addToCart(Cart cart){

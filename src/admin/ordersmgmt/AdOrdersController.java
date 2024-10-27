@@ -31,7 +31,7 @@ public class AdOrdersController implements ActionListener {
         if (e.getSource() == view.getBtnAddOrder()) {
             App.getInstance().getCartView().setVisible(true);
         } else if (e.getSource() == view.getBtnUpdateOrder()) {
-            //updateOrder();
+            updateOrder();
         } else if(e.getSource() == view.getBtnDeleteOrder()) {
             deleteOrder();
         } else if (e.getSource() == view.getBtnBack()) {
@@ -76,7 +76,46 @@ public class AdOrdersController implements ActionListener {
             JOptionPane.showMessageDialog(null, "Order ID does not exist!");
             return;
         }
+    }
+    public void updateOrder(){
+        int orderID = 0;
+        List<Integer> orderIDList = ordersDAO.getAllorderID();
+        String id = JOptionPane.showInputDialog(null, "Enter orderID: ");
+        try {
+            orderID = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid orderID!");
+            return;
+        }
+        if(!orderIDList.contains(orderID)) {
+            JOptionPane.showMessageDialog(null, "OrderID does not exist!");
+            return;
+        }
+        String status = JOptionPane.showInputDialog(null, "Enter order status: \n 1. pending \n 2. approved \n 3. shipped \n 4. canceled");
+        if (!isValidStatus(status)) {
+            JOptionPane.showMessageDialog(null, "Invalid status!");
+            return;
+        }
+        boolean success = ordersDAO.updateStatus(orderID, status);
+        if(success) {
+            JOptionPane.showMessageDialog(null, "Status updated");
+            displayOrders();
+        } else {
+            JOptionPane.showMessageDialog(null, "Failed to update status!");
+        }
+    }
 
+    private boolean isValidStatus(String status) {
+        String[] statusList = {"pending", "approved", "shipped", "canceled"};
+        if (status == null || status.isEmpty()) {
+            return false;
+        }
+        for (String validStatus : statusList) {
+            if (validStatus.equalsIgnoreCase(status)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

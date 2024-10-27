@@ -1,14 +1,12 @@
 package customer.cart;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.List;
-
 import orders.OrderDetailsDAO;
 import products.Products;
 import products.ProductsDAO;
-import register.users.UsersDAO;
 import register.Session;
 
 public class CartController implements ActionListener {
@@ -31,11 +29,9 @@ public class CartController implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.getBtnAdd()){
-            //System.out.println("button Add to cart pressed!");
             addProduct();
         }
         else if (e.getSource() == view.getBtnOrder()) {
-            System.out.println("button place order pressed!");
             placeOrder();
             view.setVisible(false);
         }
@@ -54,20 +50,6 @@ public class CartController implements ActionListener {
             productsDao.updateProductStock(newStockQuantity, productID);
         }
         String defaultStatus = "pending";
-        /*int customerID = 0;
-        String customerid = JOptionPane.showInputDialog("Enter your userID: ");
-        try {
-            customerID = Integer.parseInt(customerid);
-        } catch(NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid user ID!");
-            return;
-        }
-        // TO DO: check if customerID exist in Users table
-        List<Integer> userIDList = usersDAO.getAllUserID();
-        if (!userIDList.contains(customerID)) {
-            JOptionPane.showMessageDialog(null,"Invalid user ID");
-            return;
-        }*/
         int customerID = Session.getInstance().getCurrentUser().getUserID();
         System.out.println("User with id: "+ customerID+" placed order!!!!!!!!!!");
 
@@ -83,9 +65,7 @@ public class CartController implements ActionListener {
 
 
     private void addProduct(){
-        // debug
         int productID = 0;
-        System.out.println("get into addProduct!!!");
         String id = JOptionPane.showInputDialog("Enter ProductID: ");
         try {
             productID = Integer.parseInt(id);
@@ -100,10 +80,6 @@ public class CartController implements ActionListener {
         }
 
         Products product = productsDao.findProductbyID(Integer.parseInt(id));
-        /*if (product == null) {
-            JOptionPane.showMessageDialog(null, "This product does not exist!");
-            return;
-        }*/
         int orderQuantity = 0;
         String quantity = JOptionPane.showInputDialog(null,"Enter orderQuantity: ");
         try {
@@ -120,9 +96,6 @@ public class CartController implements ActionListener {
             return;
         }
 
-        // TO DO: update stock (stock quantity - orderquantity)
-
-        //
         CartLines line = new CartLines();
         line.setCartID(this.cart.getCartID());
         line.setProductID(product.getProductID());

@@ -13,8 +13,6 @@ public class OrdersDAO {
     // Load Orders
     //// Load all
     public List<Orders> loadAllOrders(){
-        // DEBUG
-        //System.out.println("got into orderDAO.loadAllOrders!!!");
         List<Orders> orderList = new ArrayList<>();
         String query = """
             WITH OrderTotals AS (
@@ -73,7 +71,7 @@ public class OrdersDAO {
 
 
     // Find an order by ID
-    public Orders findOrderByID(int orderID) {
+    /*public Orders findOrderByID(int orderID) {
         Connection connection = null;
         Orders order = null;
         try {
@@ -107,11 +105,26 @@ public class OrdersDAO {
             DatabaseConn.getInstance().closeConn(connection);
         }
         return order;
+    }*/
+
+    //TO DO: Update order status(for admin) / Cancel order (for customer)
+    public boolean updateStatus(int orderID, String status) {
+        Connection connection = null;
+        try {
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = "UPDATE Orders SET status = ? WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, status);
+            statement.setInt(2, orderID);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
-    //TO DO: Update order status(for admin - associate with updateTransaction
-
-    // TO DO: Delete order(for admin - associated with updateTransaction
+    // TO DO: Delete order(for admin)
     public boolean deleteOrder(int orderID){
         Connection connection = null;
         try{
@@ -209,6 +222,29 @@ public class OrdersDAO {
             DatabaseConn.getInstance().closeConn(connection);
         }
         return ordersList;
+    }
+
+    // Get all orderID of a user
+    public List<Integer> getUserOrderID (int userID){
+        Connection connection = null;
+        List<Integer> userOrderIDList = new ArrayList<>();
+        try {
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = "SELECT id from Orders WHERE customerID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                userOrderIDList.add(resultSet.getInt("id"));
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return userOrderIDList;
     }
 }
 

@@ -10,7 +10,6 @@ import admin.usersmgmt.AdUserView;
 import customer.browser.BrowserController;
 import customer.browser.BrowserView;
 import customer.cart.CartController;
-import customer.cart.CartDAO;
 import customer.cart.CartView;
 import customer.orderhistory.OrderHisController;
 import customer.orderhistory.OrderHisView;
@@ -26,14 +25,12 @@ import register.login.LoginView;
 
 public class App {
     private static App instance;
-    //private final Session session;
-
     // Main components
     private final UsersDAO usersDAO;
     private final OrdersDAO ordersDAO;
     private final OrderDetailsDAO orderDetailsDAO;
     private final CartView cartView;
-    private final CartDAO cartDAO;
+    //private final CartDAO cartDAO;
     private final ProductsDAO productsDAO;
     private final BrowserView browserView;
     private final OrderHisView orderHisView;
@@ -59,18 +56,18 @@ public class App {
 
 
     // Constructor with Dependency Injection
-    private App(UsersDAO usersDAO, OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO, CartDAO cartDAO, ProductsDAO productsDAO) {
+    private App(UsersDAO usersDAO, OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO, ProductsDAO productsDAO) {
         this.usersDAO = usersDAO;
         this.ordersDAO = ordersDAO;
         this.orderDetailsDAO = orderDetailsDAO;
-        this.cartDAO = cartDAO;
+        //this.cartDAO = cartDAO;
         this.productsDAO = productsDAO;
 
         this.homeScreen = new HomeScreen();
         this.registerView = new RegisterView();
         this.loginView = new LoginView();
-        this.adProductsView = new AdProductsView(productsDAO, ordersDAO, orderDetailsDAO);
-        this.orderHisView = new OrderHisView(ordersDAO, orderDetailsDAO);
+        this.adProductsView = new AdProductsView();
+        this.orderHisView = new OrderHisView();
         this.cartView = new CartView();
         this.browserView = new BrowserView();
         this.adUserView = new AdUserView();
@@ -82,7 +79,7 @@ public class App {
         this.homeScreenController = new HomeScreenController(homeScreen);
         this.registerController = new RegisterController(registerView, usersDAO, homeScreen);
         this.loginController = new LoginController(loginView, usersDAO, homeScreen);
-        this.browserController = new BrowserController(browserView, productsDAO, ordersDAO, orderDetailsDAO);
+        this.browserController = new BrowserController(browserView, productsDAO);
         //this.orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
         this.cartController = new CartController(cartView, orderDetailsDAO, productsDAO);
         this.adProductsController = new AdProductsController(adProductsView, productsDAO);
@@ -94,14 +91,14 @@ public class App {
     public static App getInstance() {
         if (instance == null) {
             // Inject dependencies when creating the App instance
-            instance = new App(new UsersDAO(), new OrdersDAO(), new OrderDetailsDAO(), new CartDAO(), new ProductsDAO());
+            instance = new App(new UsersDAO(), new OrdersDAO(), new OrderDetailsDAO(), new ProductsDAO());
         }
         return instance;
     }
 
     public OrderHisController getOrderHisController(){
         if (Session.getInstance().getCurrentUser() != null) {
-            return new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
+            return new OrderHisController(orderHisView, ordersDAO);
         } else {
             throw new IllegalStateException("No user login yet!");
         }

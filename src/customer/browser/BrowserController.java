@@ -18,15 +18,11 @@ import java.util.List;
 public class BrowserController implements ActionListener {
     private ProductsDAO productDAO;
     private final BrowserView view;
-    private OrdersDAO ordersDAO;
-    private OrderDetailsDAO orderDetailsDAO;
 
-    public BrowserController(BrowserView view, ProductsDAO productDAO, OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO) {
+    public BrowserController(BrowserView view, ProductsDAO productDAO) {
         this.productDAO = productDAO;
         this.view = view;
         //System.out.println("browser controller created!");
-        this.ordersDAO = ordersDAO;
-        this.orderDetailsDAO = orderDetailsDAO;
         loadProductList();
         loadCategTags();
         //int productID = 0;
@@ -61,17 +57,6 @@ public class BrowserController implements ActionListener {
             }
 
         }
-    }
-    private CartView cartView = new CartView();
-
-    public CartView getCartView() {
-        return cartView;
-    }
-
-    private OrderHisView orderHisView = new OrderHisView(ordersDAO, orderDetailsDAO);
-
-    public OrderHisView getOrderHisView() {
-        return orderHisView;
     }
 
     public void findProduct() {

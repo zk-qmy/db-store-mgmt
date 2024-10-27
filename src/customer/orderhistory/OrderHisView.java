@@ -11,18 +11,15 @@ import java.awt.*;
 import java.util.List;
 
 public class OrderHisView extends JFrame{
-    private JButton btnFind = new JButton("Find Order");
-    private OrdersDAO ordersDAO;
-    private OrderDetailsDAO orderDetailsDAO;
+    private JButton btnCancel = new JButton("Cancel Order");
+    private JButton btnRefresh = new JButton("Refresh Page");
     private JPanel orderPan;
 
-    public OrderHisView(OrdersDAO ordersDAO, OrderDetailsDAO orderDetailsDAO) {
-        this.ordersDAO = ordersDAO;
-        this.orderDetailsDAO = orderDetailsDAO;
-
+    public OrderHisView() {
         this.setTitle("Our Products");
         this.setLayout(new BorderLayout());
         this.setSize(1020, 800);
+        this.setLocationRelativeTo(null);
 
         // LabelTit
         JLabel labelTit = new JLabel("Order History");
@@ -36,7 +33,8 @@ public class OrderHisView extends JFrame{
         JPanel controlPan = new JPanel();
         controlPan.setLayout(new BoxLayout(controlPan, BoxLayout.X_AXIS));
         controlPan.setBorder(new EmptyBorder(40, 20, 40, 20));
-        controlPan.add(btnFind);
+        controlPan.add(btnCancel);
+        controlPan.add(btnRefresh);
 
         // Order panel - grid
         orderPan = new JPanel();
@@ -54,10 +52,6 @@ public class OrderHisView extends JFrame{
         this.getContentPane().add(labelTit, BorderLayout.NORTH);
     }
 
-
-    public void displaySelectedOrder(Orders order) {
-
-    }
     public void displayOrders(List<Orders> ordersList) {
         orderPan.removeAll();
 
@@ -90,8 +84,11 @@ public class OrderHisView extends JFrame{
         orderPan.repaint();
     }
 
-    public JButton getBtnFind() {
-        return btnFind;
+    public JButton getBtnCancel() {
+        return btnCancel;
+    }
+    public JButton getBtnRefresh(){
+        return btnRefresh;
     }
 
     private void setStatusColor(JLabel status){
