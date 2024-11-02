@@ -1,5 +1,6 @@
 package app;
 
+import admin.dashboard.DashBoardController;
 import admin.dashboard.DashBoardView;
 import admin.ordersmgmt.AdOrdersController;
 import admin.ordersmgmt.AdOrdersView;
@@ -30,7 +31,6 @@ public class App {
     private final OrdersDAO ordersDAO;
     private final OrderDetailsDAO orderDetailsDAO;
     private final CartView cartView;
-    //private final CartDAO cartDAO;
     private final ProductsDAO productsDAO;
     private final BrowserView browserView;
     private final OrderHisView orderHisView;
@@ -53,6 +53,7 @@ public class App {
     private final AdProductsController adProductsController;
     private final AdUserController adUserController;
     private final AdOrdersController adOrdersController;
+    private final DashBoardController dashBoardController;
 
 
     // Constructor with Dependency Injection
@@ -60,7 +61,6 @@ public class App {
         this.usersDAO = usersDAO;
         this.ordersDAO = ordersDAO;
         this.orderDetailsDAO = orderDetailsDAO;
-        //this.cartDAO = cartDAO;
         this.productsDAO = productsDAO;
 
         this.homeScreen = new HomeScreen();
@@ -85,6 +85,7 @@ public class App {
         this.adProductsController = new AdProductsController(adProductsView, productsDAO);
         this.adUserController = new AdUserController(adUserView, usersDAO);
         this.adOrdersController = new AdOrdersController(adOrdersView, ordersDAO);
+        this.dashBoardController = new DashBoardController(dashBoardView, productsDAO);
 
     }
 
@@ -121,8 +122,8 @@ public class App {
 
     // Main class
     public static void main(String[] args) {
-        App.getInstance().getHomeScreen().setVisible(true);
+        //App.getInstance().getHomeScreen().setVisible(true);
         // developing view
-        //App.getInstance().getOrderHisView().setVisible(true);
+        App.getInstance().getDashBoardView().setVisible(true);
     }
 }

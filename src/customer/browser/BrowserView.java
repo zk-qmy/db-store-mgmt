@@ -99,7 +99,6 @@ public class BrowserView extends JFrame {
         // Create product box
         Border boxBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
         // add product to panel
-        // TO DO: adjust this
         if (productsList.isEmpty()) {
             JLabel emptyList = new JLabel(" No product available!");
         } else {
@@ -148,7 +147,6 @@ public class BrowserView extends JFrame {
         // Create product box
         Border boxBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
         // add product to panel
-        // TO DO: adjust this
         if (product == null) {
             JLabel nullProduct = new JLabel(" Product does not exist!");
         } else {

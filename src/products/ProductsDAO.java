@@ -1,8 +1,10 @@
 package products;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 import app.DatabaseConn;
 
@@ -276,5 +278,105 @@ public class ProductsDAO {
             DatabaseConn.getInstance().closeConn(connection);
         }
         return productIDList;
+    }
+
+    // get products that have stock quantity smaller than 5
+    public List<Products> getAlertProducts (){
+        Connection connection = null;
+        List<Products> alertProductList = new ArrayList<>();
+        try {
+            connection = DatabaseConn.getInstance().getConnection();
+            String query = " SELECT * FROM Products WHERE quantity <= 5";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Products product = new Products();
+                product.setProductID(resultSet.getInt("id"));
+                product.setProductName(resultSet.getString("name"));
+                product.setStockQuantity(resultSet.getInt("quantity"));
+                alertProductList.add(product);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return alertProductList;
+    }
+    public Map<String, Integer> getCategCount() {
+        Map<String, Integer> categMap = new HashMap<>();
+        String query = "SELECT c.name, COUNT(p.id) AS totalCategCount " +
+                        "FROM categories c " +
+                        "JOIN products p ON c.id = p.categoryID " +
+                        "GROUP BY c.Name";
+        Connection connection = null;
+        try{
+            connection = DatabaseConn.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            while(resultSet.next()) {
+                categMap.put(resultSet.getString("name"),
+                            resultSet.getInt("totalCategCount"));
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return categMap;
+    }
+
+    public Map<String, Integer> getUserCount(){
+        Connection connection = null;
+        String query = "SELECT r.roleName, COUNT(u.id) AS totalUserCount " +
+                        "FROM Users u " +
+                        "JOIN roles r ON r.id = u.roleID " +
+                        "GROUP BY r.roleName";
+        Map<String, Integer> userMap = new HashMap<>();
+        try {
+            connection = DatabaseConn.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            while(resultSet.next()) {
+                userMap.put(resultSet.getString("roleName"),
+                        resultSet.getInt("totalUserCount"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return userMap;
+    }
+
+    public double getTotalSales(){
+        Connection connection = null;
+        String query = "SELECT SUM(o.orderQuantity * p.price) as totalSale " +
+                        "FROM OrderDetails o " +
+                        "JOIN Products p ON o.productID = p.id";
+        double total = 0;
+        try{
+            connection = DatabaseConn.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            if(resultSet.next()){
+                total = resultSet.getDouble("totalSale");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return total;
     }
 }
