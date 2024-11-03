@@ -66,7 +66,6 @@ public class OrdersDAO {
         return orderList;
     }
     // Save an Order (already in product DAO)
-    // TO DO: check implement order history for a user
 
 
     // Find an order by ID
@@ -169,8 +168,6 @@ public class OrdersDAO {
         return true;
     }
 
-    // TO DO: Remove Order(line) for customer - have not figure out how to do it
-
     // Get all orderID
     public List<Integer> getAllorderID(){
         Connection connection = null;
@@ -263,6 +260,28 @@ public class OrdersDAO {
             DatabaseConn.getInstance().closeConn(connection);
         }
         return userOrderIDList;
+    }
+    public String getStatusbyOrderID(int orderID) {
+        Connection connection = null;
+        String query = "SELECT Status.statusName FROM Status "+
+                        "JOIN Orders ON Orders.statusID = Status.id " +
+                        "WHERE Orders.id = ? ";
+        String status = null;
+        try {
+            connection = DatabaseConn.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, orderID);
+            ResultSet resultSet = statement.executeQuery();
+
+            if(resultSet.next()) {
+                status = resultSet.getString("statusName");
+            }
+        } catch (SQLException e){
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return status;
     }
 }
 

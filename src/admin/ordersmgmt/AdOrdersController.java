@@ -3,6 +3,8 @@ package admin.ordersmgmt;
 import app.App;
 import orders.Orders;
 import orders.OrdersDAO;
+import register.Session;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,14 +66,33 @@ public class AdOrdersController implements ActionListener {
             JOptionPane.showMessageDialog(null, "Invalid orderID");
             return;
         }
-        // get all orderID logic
+        // check if orderID exist
         List<Integer> orderIDList = ordersDAO.getAllorderID();
-        if (orderIDList.contains(orderID)) {
-            ordersDAO.deleteOrder(orderID);
-            displayOrders();
-        } else {
+        if (!orderIDList.contains(orderID)) {
             JOptionPane.showMessageDialog(null, "Order ID does not exist!");
             return;
+        }
+        // check if this order is not cancelled
+        checkStatus(orderID);
+
+    }
+    private void checkStatus(int orderID){
+        String dbStatus = ordersDAO.getStatusbyOrderID(orderID);
+        if (dbStatus == null || dbStatus.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Cannot find Order Status!");
+            return;
+        }
+        if (!dbStatus.equals("cancelled")){
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "This Order is being " + dbStatus + ". Do you still want to delete? ",
+                        "Delete", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                ordersDAO.deleteOrder(orderID);
+                displayOrders();
+            }
+        } else {
+            ordersDAO.deleteOrder(orderID);
+            displayOrders();
         }
     }
     public void updateOrder(){
