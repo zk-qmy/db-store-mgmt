@@ -49,13 +49,17 @@ public class CartController implements ActionListener {
             //product.setStockQuantity(newStockQuantity);
             productsDao.updateProductStock(newStockQuantity, productID);
         }
-        String defaultStatus = "pending";
+        int defaultStatusID = 2;  //"pending"
         int customerID = Session.getInstance().getCurrentUser().getUserID();
         System.out.println("User with id: "+ customerID+" placed order!!!!!!!!!!");
 
         // Save the cart and its details into the database
-        orderDetailsDAO.addToOrderDB(cart, defaultStatus, customerID);
+        boolean success = orderDetailsDAO.addToOrderDB(cart, defaultStatusID, customerID);
         // Optionally, clear the cart or show a success message
+        if (!success) {
+            JOptionPane.showMessageDialog(null, "Failed to place this order!");
+            return;
+        }
         JOptionPane.showMessageDialog(null, "Order placed successfully!");
         // Clear the cart
         cart = new Cart();

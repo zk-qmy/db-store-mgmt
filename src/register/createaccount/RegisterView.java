@@ -35,7 +35,6 @@ public class RegisterView extends JFrame {
     public RegisterView() {
         setTitle("Register");
         setSize(400, 300);
-        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Create main panel with BoxLayout
@@ -86,7 +85,6 @@ public class RegisterView extends JFrame {
 
 
         btnRegister.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //btnLogin.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Add components to main panel
         mainPanel.add(namePanel);
@@ -97,7 +95,6 @@ public class RegisterView extends JFrame {
         mainPanel.add(confirmPasswordPanel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add space
         mainPanel.add(btnRegister);
-        //mainPanel.add(btnLogin);
 
         // Add main panel to frame
         add(mainPanel);
@@ -105,7 +102,4 @@ public class RegisterView extends JFrame {
     public JButton getBtnRegister() {
         return btnRegister;
     }
-    /*public JButton getBtnLogin() {
-        return btnLogin;
-    }*/
 }

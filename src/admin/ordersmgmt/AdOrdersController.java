@@ -3,12 +3,9 @@ package admin.ordersmgmt;
 import app.App;
 import orders.Orders;
 import orders.OrdersDAO;
-import register.Session;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdOrdersController implements ActionListener {
@@ -91,12 +88,20 @@ public class AdOrdersController implements ActionListener {
             JOptionPane.showMessageDialog(null, "OrderID does not exist!");
             return;
         }
-        String status = JOptionPane.showInputDialog(null, "Enter order status: \n 1. pending \n 2. approved \n 3. shipped \n 4. canceled");
-        if (!isValidStatus(status)) {
+        int statusID = 0;
+        String status = JOptionPane.showInputDialog(null,
+                "Enter order statusID: \n 1. approved \n 2. pending \n 3. shipped \n 4. processed \n 5. cancelled");
+        try {
+            statusID = Integer.parseInt(status);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid statusID!");
+            return;
+        }
+        if (!isValidStatus(statusID)) {
             JOptionPane.showMessageDialog(null, "Invalid status!");
             return;
         }
-        boolean success = ordersDAO.updateStatus(orderID, status);
+        boolean success = ordersDAO.updateStatus(orderID, statusID);
         if(success) {
             JOptionPane.showMessageDialog(null, "Status updated");
             displayOrders();
@@ -104,7 +109,11 @@ public class AdOrdersController implements ActionListener {
             JOptionPane.showMessageDialog(null, "Failed to update status!");
         }
     }
-
+    private boolean isValidStatus(int statusID) {
+        List<Integer> statusIDList = ordersDAO.getAllStatusID();
+        return statusIDList.contains(statusID);
+    }
+    /*
     private boolean isValidStatus(String status) {
         String[] statusList = {"pending", "approved", "shipped", "canceled"};
         if (status == null || status.isEmpty()) {
@@ -116,6 +125,7 @@ public class AdOrdersController implements ActionListener {
             }
         }
         return false;
-    }
+    }*/
+
 
 }

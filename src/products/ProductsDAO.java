@@ -5,11 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-
 import app.DatabaseConn;
 
-import javax.swing.plaf.nimbus.State;
-import javax.xml.crypto.Data;
 
 
 public class ProductsDAO {

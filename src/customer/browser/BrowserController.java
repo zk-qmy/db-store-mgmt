@@ -25,7 +25,6 @@ public class BrowserController implements ActionListener {
         //System.out.println("browser controller created!");
         loadProductList();
         loadCategTags();
-        //int productID = 0;
         view.getBtnFind().addActionListener(this);
         view.getBtnBrowse().addActionListener(this);
         view.getBtnBuy().addActionListener(this);
@@ -84,7 +83,7 @@ public class BrowserController implements ActionListener {
     }
 
     public void loadCategTags() {
-        List<String> categories = productDAO.getAllCategs(); // Implement this method in your DAO
+        List<String> categories = productDAO.getAllCategs();
         // Clear existing items
         view.getCategoryComboBox().removeAllItems();
 

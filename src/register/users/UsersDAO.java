@@ -214,6 +214,21 @@ public class UsersDAO {
         return userList;
     }
 
+    public boolean hasOrder(int userID) { // check if user have all their order cancelled, or shipped
+        Connection connection = null;
+        String query = "SELECT userID FROM Users ";
+        /*try {
+            connection = DatabaseConn.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+
+            }
+        }*/
+        return true;
+    }
+
 
 
 }

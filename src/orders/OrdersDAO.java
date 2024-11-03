@@ -3,7 +3,6 @@ package orders;
 import app.DatabaseConn;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,28 +14,29 @@ public class OrdersDAO {
     public List<Orders> loadAllOrders(){
         List<Orders> orderList = new ArrayList<>();
         String query = """
-            WITH OrderTotals AS (
-                SELECT
-                    Orders.id AS orderID,
-                    Orders.customerID,
-                    Orders.status,
-                    SUM(OrderDetails.orderQuantity * Products.price) AS orderTotal
-                FROM Orders
-                JOIN OrderDetails ON Orders.id = OrderDetails.orderID
-                JOIN Products ON OrderDetails.productID = Products.id
-                GROUP BY Orders.id, Orders.customerID
-            )
+        WITH OrderTotals AS (
             SELECT
-                ot.orderID,
-                ot.customerID,
-                ot.orderTotal,
-                ot.status,
-                u.name AS name,
-                u.address AS address,
-                u.phone AS phone
-            FROM OrderTotals ot
-            JOIN Users u ON ot.customerID = u.id
-            ORDER BY ot.orderID ASC;
+                Orders.id AS orderID,
+                Orders.customerID,
+                Status.statusName,
+                SUM(OrderDetails.orderQuantity * Products.price) AS orderTotal
+            FROM Orders
+            JOIN OrderDetails ON Orders.id = OrderDetails.orderID
+            JOIN Products ON OrderDetails.productID = Products.id
+            JOIN Status ON Status.id = Orders.statusID
+            GROUP BY Orders.id, Orders.customerID, Status.statusName
+        )
+        SELECT
+            ot.orderID,
+            ot.customerID,
+            ot.orderTotal,
+            ot.statusName AS status,
+            u.name AS name,
+            u.address AS address,
+            u.phone AS phone
+        FROM OrderTotals ot
+        JOIN Users u ON ot.customerID = u.id
+        ORDER BY ot.orderID ASC;
         """;
 
 
@@ -54,7 +54,6 @@ public class OrdersDAO {
                 order.setStatus(rs.getString("status"));
                 order.setAddress(rs.getString("address"));
                 order.setPhone(rs.getString("phone"));
-
 
                 orderList.add(order);
             }
@@ -106,15 +105,33 @@ public class OrdersDAO {
         }
         return order;
     }*/
+    public List<Integer> getAllStatusID(){
+        List<Integer> statusIDList = new ArrayList<>();
+        Connection connection = null;
+        try{
+            String query = "SELECT id FROM Status";
+            connection = DatabaseConn.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                statusIDList.add(resultSet.getInt("id"));
+            }
+        } catch (SQLException e) {
+            return null;
+        }finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return statusIDList;
+    }
 
-    //TO DO: Update order status(for admin) / Cancel order (for customer)
-    public boolean updateStatus(int orderID, String status) {
+    //Update order status(for admin) / Cancel order (for customer)
+    public boolean updateStatus(int orderID, int statusID) {
         Connection connection = null;
         try {
             connection = DatabaseConn.getInstance().getConnection();
-            String query = "UPDATE Orders SET status = ? WHERE id = ?";
+            String query = "UPDATE Orders SET statusID = ? WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, status);
+            statement.setInt(1, statusID);
             statement.setInt(2, orderID);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -187,17 +204,18 @@ public class OrdersDAO {
                     SELECT
                         Orders.id AS orderID,
                         Orders.customerID,
-                        Orders.status,
+                        Status.statusName,
                         SUM(OrderDetails.orderQuantity * Products.price) AS orderTotal
                     FROM Orders
                     JOIN OrderDetails ON Orders.id = OrderDetails.orderID
                     JOIN Products ON OrderDetails.productID = Products.id
-                    GROUP BY Orders.id, Orders.customerID
+                    JOIN Status ON Status.id = Orders.statusID
+                    GROUP BY Orders.id, Orders.customerID, Status.statusName
                 )
                 SELECT
                     ot.orderID,
                     ot.orderTotal,
-                    ot.status
+                    ot.statusName
                 FROM OrderTotals ot
                 WHERE ot.customerID = ?
                 ORDER BY ot.orderID ASC;
@@ -211,7 +229,7 @@ public class OrdersDAO {
                 Orders order = new Orders();
                 order.setOrderId(resultSet.getInt("orderID"));
                 order.setTotal(resultSet.getDouble("orderTotal"));
-                order.setStatus(resultSet.getString("status"));
+                order.setStatus(resultSet.getString("statusName"));
                 ordersList.add(order);
             }
 

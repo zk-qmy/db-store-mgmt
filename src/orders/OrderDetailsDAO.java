@@ -15,15 +15,15 @@ public class OrderDetailsDAO {
     // Find an OrderDetail
     // Save an OrderDetail
     // addToCart
-    public boolean addToOrderDB(Cart cart, String defaultStatus, int customerID) {
+    public boolean addToOrderDB(Cart cart, int defaultStatusID, int customerID) {
         System.out.println("Got into addToOrderDB function!!!");
         connection = null;
         try {
             connection = DatabaseConn.getInstance().getConnection();
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Orders(customerID, status) VALUES (?, ?)",
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Orders(customerID, statusID) VALUES (?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1, customerID);
-            stmt.setString(2, defaultStatus);
+            stmt.setInt(2, defaultStatusID);
 
             stmt.executeUpdate();
             // Retrieve generated OrderID
