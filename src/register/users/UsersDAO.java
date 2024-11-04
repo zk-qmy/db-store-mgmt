@@ -1,6 +1,8 @@
 package register.users;
 
 import app.DatabaseConn;
+import orders.Orders;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -214,19 +216,32 @@ public class UsersDAO {
         return userList;
     }
 
-    public boolean hasOrder(int userID) { // check if user have all their order cancelled, or shipped
+    public List<Orders> getProcessOrders(int userID) {
         Connection connection = null;
-        String query = "SELECT userID FROM Users ";
-        /*try {
+        String query = "SELECT Users.id AS userID, Users.username, Status.statusName, Orders.id AS orderID "+
+                    "FROM Orders "+
+                    "JOIN Status ON Orders.statusID = Status.id "+
+                    "JOIN Users ON Orders.customerID = Users.id "+
+                    "WHERE Users.id = ?"; //AND Status.statusName NOT IN ('cancelled', 'shipped') ";
+
+        List<Orders> ordersList = new ArrayList<>();
+        try {
             connection = DatabaseConn.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1,userID);
             ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-
+            while (resultSet.next()) {
+                Orders order = new Orders();
+                order.setOrderId(resultSet.getInt("orderID"));
+                order.setStatus(resultSet.getString("statusName"));
+                ordersList.add(order);
             }
-        }*/
-        return true;
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            DatabaseConn.getInstance().closeConn(connection);
+        }
+        return ordersList;
     }
 
 

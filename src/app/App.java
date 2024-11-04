@@ -83,7 +83,7 @@ public class App {
         //this.orderHisController = new OrderHisController(orderHisView, ordersDAO, orderDetailsDAO);
         this.cartController = new CartController(cartView, orderDetailsDAO, productsDAO);
         this.adProductsController = new AdProductsController(adProductsView, productsDAO);
-        this.adUserController = new AdUserController(adUserView, usersDAO);
+        this.adUserController = new AdUserController(adUserView, usersDAO, ordersDAO);
         this.adOrdersController = new AdOrdersController(adOrdersView, ordersDAO);
         this.dashBoardController = new DashBoardController(dashBoardView, productsDAO);
 

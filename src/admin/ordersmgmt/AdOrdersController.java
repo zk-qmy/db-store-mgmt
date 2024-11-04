@@ -82,7 +82,7 @@ public class AdOrdersController implements ActionListener {
             JOptionPane.showMessageDialog(null, "Cannot find Order Status!");
             return;
         }
-        if (!dbStatus.equals("cancelled")){
+        if (!dbStatus.equals("cancelled") && !dbStatus.equals("shipped")){
             int confirm = JOptionPane.showConfirmDialog(null,
                     "This Order is being " + dbStatus + ". Do you still want to delete? ",
                         "Delete", JOptionPane.YES_NO_OPTION);

@@ -1,9 +1,10 @@
 package admin.usersmgmt;
 
 import app.App;
+import orders.Orders;
+import orders.OrdersDAO;
 import register.users.Users;
 import register.users.UsersDAO;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,10 +13,12 @@ import java.util.List;
 public class AdUserController implements ActionListener {
     private AdUserView view;
     private UsersDAO usersDAO;
+    private OrdersDAO ordersDAO;
 
-    public AdUserController(AdUserView view, UsersDAO usersDAO){
+    public AdUserController(AdUserView view, UsersDAO usersDAO, OrdersDAO ordersDAO){
         this.view = view;
         this.usersDAO = usersDAO;
+        this.ordersDAO = ordersDAO;
         displayUsers();
 
         view.getBtnAddUser().addActionListener(this);
@@ -142,6 +145,7 @@ public class AdUserController implements ActionListener {
     }
 
     public void deleteUser() {
+        // check valid userID
         // if userID = 1 (ultimate admin -> not allow)
         String userid = JOptionPane.showInputDialog("Enter user id that you want to delete: ");
         int userID = 0;
@@ -156,8 +160,28 @@ public class AdUserController implements ActionListener {
             JOptionPane.showMessageDialog(null, "Cannot delete Ultimate Admin account!");
             return;
         }
-        boolean success = usersDAO.deleteUser(userID);
+        // check if this user has on going orders
+        boolean success = checkProcessOrders(userID);
         displayUsers();
         confirmProcess(success, "delete");
     }
+    private boolean checkProcessOrders(int userID){
+        List<Orders> ordersList = usersDAO.getProcessOrders(userID);
+        if (!(ordersList == null) || !ordersList.isEmpty()) {
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "This will delete all on going Orders of this User too. Do you want to delete all?",
+                    "Delete All", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                // delete order, then delete user
+                for (Orders order: ordersList) {
+                    int orderID = order.getOrderID();
+                    ordersDAO.deleteOrder(orderID);
+                }
+            }
+        }
+        // else, no order exist yet => just delete user
+        // delete user
+        return usersDAO.deleteUser(userID);
+    }
+
 }
