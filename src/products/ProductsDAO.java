@@ -358,7 +358,9 @@ public class ProductsDAO {
         Connection connection = null;
         String query = "SELECT SUM(o.orderQuantity * p.price) as totalSale " +
                         "FROM OrderDetails o " +
-                        "JOIN Products p ON o.productID = p.id";
+                        "JOIN Products p ON o.productID = p.id "+
+                        "JOIN Orders od ON o.orderID=od.id " +
+                        "WHERE od.statusID=4 ";
         double total = 0;
         try{
             connection = DatabaseConn.getInstance().getConnection();
